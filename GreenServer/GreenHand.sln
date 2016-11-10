@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenServer", "GreenServer\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sketches", "Sketches", "{51B7D54C-5118-4A3C-ABFE-A54010EB056A}"
 	ProjectSection(SolutionItems) = preProject
-		Temperature.txt = Temperature.txt
+		Sensor.ino = Sensor.ino
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHandClient.Droid", "GreenHandClient\GreenHandClient.Droid\GreenHandClient.Droid.csproj", "{656FE4EC-C0A4-4C96-9DB9-F2FDFB7A6C32}"
