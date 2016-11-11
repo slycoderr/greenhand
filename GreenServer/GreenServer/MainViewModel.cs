@@ -21,7 +21,7 @@ namespace GreenServer
 
         public MainViewModel()
         {
-            valuePollTimer = ThreadPoolTimer.CreatePeriodicTimer(valuePollTimerOnTick, ValueRefeshRate);
+
         }
 
         private async void valuePollTimerOnTick(ThreadPoolTimer timer)
@@ -43,6 +43,16 @@ namespace GreenServer
         public void RemoveSensor()
         {
             
+        }
+
+        private void StartPollingValues()
+        {
+            valuePollTimer = ThreadPoolTimer.CreatePeriodicTimer(valuePollTimerOnTick, ValueRefeshRate);
+        }
+
+        private void StopPollingValues()
+        {
+            valuePollTimer?.Cancel();
         }
     }
 }
