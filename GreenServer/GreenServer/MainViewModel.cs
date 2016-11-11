@@ -27,7 +27,7 @@ namespace GreenServer
         private async void valuePollTimerOnTick(ThreadPoolTimer timer)
         {
             //get values from sensors
-            foreach (var sensor in Sensors)
+            foreach (var sensor in Sensors.Where(s=>s.IsConnected))
             {
                 sensor.ReadValue();
             }
@@ -37,7 +37,7 @@ namespace GreenServer
 
         public void AddSenor()
         {
-            
+            Sensors.Add(new Sensor());
         }
 
         public void RemoveSensor()

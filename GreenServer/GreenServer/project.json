@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "Slycoder.Networking": "1.0.0.6",
+    "Slycoder.Networking": "1.0.0.8",
     "Slycoder.Portable": "1.0.0.11"
   },
   "frameworks": {
