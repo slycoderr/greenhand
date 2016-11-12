@@ -1,95 +1,152 @@
-#include <OneWire.h>
+//#include <OneWire.h>
 #include <SoftwareSerial.h>
 
 int DS18S20_Pin = 4; //DS18S20 Signal pin on digital 2
 
 //Temperature chip i/o
-OneWire ds(DS18S20_Pin);  // on digital pin 2
+//OneWire ds(DS18S20_Pin);  // on digital pin 2
 
-SoftwareSerial display(3, 2);
+//SoftwareSerial display(3, 2);
 
-#include <ESP8266WiFi.h>
+//#include <ESP8266WiFi.h>
 
-const char* ssid = "********";
-const char* password = "********";
+#include <WiFi.h>
 
-const char* host = "www.example.com";
+const char* ssid = "green";
+const char* password = "test1234";
+
+const char* host = "192.168.0.105";
 
 const char* deviceId = "1";
 const char* deviceType = "TEMP";
-const char* deviceName = deviceId + deviceType;
-
+String deviceName = "TEMP1";
+WiFiClient client;
+IPAddress server(192,168,0,105); 
 
 void setup()
 {
   Serial.begin(115200);
   Serial.println();
+    WiFi.begin(ssid, password);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 
-  Serial.printf("Connecting to %s ", ssid);
-  WiFi.begin(ssid, password);
+  printStatus();
+
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
-    Serial.print(".");
+    Serial.println("connecting...");
+    
+  printStatus();
   }
-  Serial.println(" connected");
+  
+      IPAddress ip = WiFi.localIP();
+          Serial.println(ip);
 }
 
-void loop(void)
+void printStatus()
 {
-  WiFiClient client;
+  if(WiFi.status() == WL_CONNECTED)
+{
+  Serial.println("WL_CONNECTED...");
+}
 
-  Serial.printf("\n[Connecting to %s ... ", host);
-  if (client.connect(host, 80))
+if(WiFi.status() == WL_NO_SHIELD)
+{
+  Serial.println("WL_NO_SHIELD...");
+}
+
+if(WiFi.status() == WL_IDLE_STATUS)
+{
+  Serial.println("WL_IDLE_STATUS...");
+}
+
+
+if(WiFi.status() == WL_NO_SSID_AVAIL)
+{
+  Serial.println("WL_NO_SSID_AVAIL...");
+}
+
+if(WiFi.status() == WL_SCAN_COMPLETED)
+{
+  Serial.println("WL_SCAN_COMPLETED...");
+}
+
+if(WiFi.status() == WL_CONNECT_FAILED)
+{
+  Serial.println("WL_CONNECT_FAILED...");
+}
+
+if(WiFi.status() == WL_CONNECTION_LOST)
+{
+  Serial.println("WL_CONNECTION_LOST...");
+}
+
+if(WiFi.status() == WL_DISCONNECTED)
+{
+  Serial.println("WL_DISCONNECTED...");
+}
+}
+
+void connect()
+{
+  if (client.connect(server, 80))
   {
-    //Serial.println("connected]");
-
-    //Serial.println("[Sending a request]");
-    //client.print(String("GET /") + " HTTP/1.1\r\n" +
-    //			 "Host: " + host + "\r\n" +
-    //			 "Connection: close\r\n" +
-    //			 "\r\n"
-    //			);
-
-    //Serial.println("[Response:]");
-
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        String line = client.readStringUntil('\n');
-        Serial.println(line);
-
-        if (line == "ReadValue")
-        {
-          if (deviceType == "TEMP")
-          {
-            float temperature = getTemp();
-            int tmp = (int) temperature;
-
-            Serial.println(tmp);
-            client.print(tmp);
-          }
-        }
-
-        else if (line == "ReadName")
-        {
-          client.print(deviceName);
-        }
-      }
-    }
-    client.stop();
-    Serial.println("\n[Disconnected]");
+    IPAddress ip = WiFi.localIP();
+     printStatus();
+    Serial.print(" connected with ip ");
+    Serial.println(ip);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
   else
   {
-    Serial.println("connection failed!]");
-    client.stop();
+    Serial.println("failed to connect");
+     printStatus();
+    digitalWrite(LED_BUILTIN, LOW);
   }
 }
 
 
-float getTemp() {
+void loop(void)
+{
+  if (!client.connected())
+  {
+    connect();
+  }
+
+  while (client.connected())
+  {
+      String line = client.readStringUntil('\n');
+      Serial.println(line);
+
+      if (line == "ReadValue")
+      {
+        if (deviceType == "TEMP")
+        {
+          //float temperature = getTemp();
+          //int tmp = (int) temperature;
+
+          Serial.println(75);
+          client.print(75);
+        }
+      }
+
+      else if (line == "ReadName")
+      {
+          Serial.println(deviceName);
+        client.print(deviceName);
+      }
+    
+  }
+
+digitalWrite(LED_BUILTIN, LOW);
+   printStatus();
+  client.stop();
+}
+
+/*
+  float getTemp() {
   //returns the temperature from one DS18S20 in DEG Celsius
 
   byte data[12];
@@ -132,4 +189,5 @@ float getTemp() {
   float TemperatureSum = tempRead / 16;
 
   return (TemperatureSum * 18 + 5) / 10 + 32;
-}
+  }
+*/

@@ -1,55 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Slycoder.Portable.MVVM;
-using Slycoder.Portable.Networking;
 
 namespace GreenHand.Portable.Models
 {
-
     public class Sensor : BindableBase
     {
-        public ObservableCollection<SensorValue> Readings { get; set; }
-        public string Name { get; }
-        public string IpAddress { get; }
-        public string Port { get; }
-        public string Id { get; set; }
-        public string Type { get; set; }
+        private string name;
+        private string ipAddress;
+        private int port;
+        private string id;
+        private string type;
+
+        public Sensor(INetworkConnection connection)
+        {
+            Network = connection;
+            Type = "TEMP";
+        }
+
+        public INetworkConnection Network { get; }
+
+        public ObservableCollection<SensorValue> Readings { get; set; } = new ObservableCollection<SensorValue>();
+
+        public string Name
+        {
+            get { return name; }
+            set { SetValue(ref name, value); }
+        }
+
+        public string IpAddress
+        {
+            get { return ipAddress; }
+            set { SetValue(ref ipAddress, value); }
+        }
+
+        public int Port
+        {
+            get { return port; }
+            set { SetValue(ref port, value); }
+        }
+
+        public string Id
+        {
+            get { return id; }
+            set { SetValue(ref id, value); }
+        }
+
+        public string Type
+        {
+            get { return type; }
+            set { SetValue(ref type, value); }
+        }
 
         public async Task ReadValue()
         {
-            //HttpWebRequest http = HttpWebRequest.CreateHttp($"http://{IpAddress}:{Port}/");
+            if (Type == "TEMP")
+            {
+                var rawValue = await Network.SendAndReceiveData("ReadValue");
+                double value;
 
-            //http.BeginGetResponse()
-
-  //          WebRequest request = WebRequest.Create(
-  //"http://www.contoso.com/default.html");
-  //          // If required by the server, set the credentials.
-  //          //request.Credentials = NetworkCredential
-  //          // Get the response.
-  //          WebResponse response = await request.BeginGetRequestStream();
-  //          // Display the status.
-  //          Debug.WriteLine(((HttpWebResponse)response).StatusDescription);
-  //          // Get the stream containing content returned by the server.
-  //          Stream dataStream = response.GetResponseStream();
-  //          // Open the stream using a StreamReader for easy access.
-  //          using (StreamReader reader = new StreamReader(dataStream))
-  //          {
-  //              string responseFromServer = reader.ReadToEnd();
-  //              // Display the content.
-  //              Debug.WriteLine(responseFromServer);
-  //              // Clean up the streams and the response.
-  //              var message = await reader.ReadLineAsync();
-  //          }
-  //          response.Close();
-
-            
+                if (double.TryParse(rawValue, out value))
+                {
+                    Readings.Add(new SensorValue {Timestamp = DateTime.Now, Type = ValueType.Temperature, Value = value});
+                }
+                else
+                {
+                    throw new Exception("TEMP wasn't a valid response: "+ rawValue);
+                }
+            }
         }
     }
 }

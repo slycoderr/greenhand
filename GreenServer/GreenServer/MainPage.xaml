@@ -5,9 +5,50 @@
     xmlns:local="using:GreenServer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:GreenHand.Portable.Models" DataContext="{StaticResource MainViewModel}"
     mc:Ignorable="d">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add" Label="add sensor" Command="{Binding AddSensorCommand}"/>
+            <AppBarButton Icon="AttachCamera" Label="connect sensor" Command="{Binding SensorConnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Icon="DisconnectDrive" Label="disconnect sensor" Command="{Binding SensorDisconnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Icon="Remove" Label="remove sensor" Command="{Binding SensorConnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="SensorListView" Header="Manage Sensors" ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Name"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ip"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Port" />
 
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <CheckBox IsEnabled="False" Content="Connected" Grid.Row="3" Grid.Column="1" IsChecked="{Binding Network.IsConnected}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <ListView Grid.Column="1" ItemsSource="{Binding Log}"/>
     </Grid>
 </Page>
