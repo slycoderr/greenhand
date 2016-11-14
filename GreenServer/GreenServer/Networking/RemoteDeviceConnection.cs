@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using GreenHand.Portable;
 using Microsoft.Maker.RemoteWiring;
 using Microsoft.Maker.Serial;
+using Slycoder.Portable.MVVM;
 
 namespace GreenServer.Networking
 {
-    public class RemoteDeviceConnection : INetworkConnection
+    public class RemoteDeviceConnection : BindableBase, INetworkConnection
     {
         private Microsoft.Maker.RemoteWiring.RemoteDevice arduino;
         private IStream connection;
+        private bool isConnected;
 
         public Task Connect(string ip, int port)
         {
@@ -27,7 +29,13 @@ namespace GreenServer.Networking
 
                 //always begin your IStream
                 connection.begin(115200, SerialConfig.SERIAL_8N1);
+                connection.ConnectionLost += ConnectionOnConnectionLost;
             });
+        }
+
+        private void ConnectionOnConnectionLost(string message)
+        {
+            IsConnected = false;
         }
 
         //treat this function like "setup()" in an Arduino sketch.
@@ -38,6 +46,8 @@ namespace GreenServer.Networking
 
             //set analog pin A0 to ANALOG INPUT
             arduino.pinMode("A0", PinMode.ANALOG);
+
+            IsConnected = true;
         }
 
         public void Disconnect()
@@ -50,6 +60,6 @@ namespace GreenServer.Networking
             return Task.Run(() => arduino.analogRead("A0").ToString());
         }
 
-        public bool IsConnected { get; set; }
+        public bool IsConnected { get { return isConnected; } set { SetValue(ref isConnected, value); } }
     }
 }
