@@ -11,8 +11,9 @@ namespace GreenServer.RemoteDevices
         public void SetupRemoteArduino()
         {
             //create a bluetooth connection and pass it to the RemoteDevice
+            connection = new BluetoothSerial("MyBluetoothDevice");
             //I am using a constructor that accepts a device name or ID.
-            arduino = new Microsoft.Maker.RemoteWiring.RemoteDevice(new BluetoothSerial("MyBluetoothDevice"));
+            arduino = new Microsoft.Maker.RemoteWiring.RemoteDevice(connection);
 
             //add a callback method (delegate) to be invoked when the device is ready, refer to the Events section for more info
             arduino.DeviceReady += Setup;

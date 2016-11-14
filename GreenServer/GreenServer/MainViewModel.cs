@@ -79,7 +79,7 @@ namespace GreenServer
 
         private void AddSenor()
         {
-            var s = new Sensor(new SensorSocketConnection());
+            var s = new Sensor(new RemoteDeviceConnection());
             Sensors.Add(s);
             SelectedSensor = s;
         }

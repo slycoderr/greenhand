@@ -101,6 +101,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Networking\RemoteDeviceConnection.cs" />
     <Compile Include="Networking\SensorSocketConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteDevices\RemoteDevice.cs" />
