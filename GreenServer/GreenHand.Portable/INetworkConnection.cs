@@ -16,7 +16,7 @@ namespace GreenHand.Portable
         /// <typeparam name="T"></typeparam>
         /// <param name="message">The message to send</param>
         /// <returns></returns>
-        Task<string> SendAndReceiveData(string message);
+        Task<string> SendAndReceiveData(string message, int pin);
 
         bool IsConnected { get; set; }
     }

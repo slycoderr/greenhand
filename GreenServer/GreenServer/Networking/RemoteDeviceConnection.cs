@@ -20,7 +20,7 @@ namespace GreenServer.Networking
         {
             return Task.Run(() =>
             {
-                connection = new BluetoothSerial("MyBluetoothDevice");
+                connection = new UsbSerial("COM4");
                 //I am using a constructor that accepts a device name or ID.
                 arduino = new Microsoft.Maker.RemoteWiring.RemoteDevice(connection);
 
@@ -30,7 +30,19 @@ namespace GreenServer.Networking
                 //always begin your IStream
                 connection.begin(115200, SerialConfig.SERIAL_8N1);
                 connection.ConnectionLost += ConnectionOnConnectionLost;
+                connection.ConnectionFailed += ConnectionOnConnectionFailed;
+                connection.ConnectionEstablished += ConnectionOnConnectionEstablished;
             });
+        }
+
+        private void ConnectionOnConnectionEstablished()
+        {
+            IsConnected = true;
+        }
+
+        private void ConnectionOnConnectionFailed(string message)
+        {
+            IsConnected = false;
         }
 
         private void ConnectionOnConnectionLost(string message)
@@ -45,19 +57,23 @@ namespace GreenServer.Networking
             arduino.pinMode(13, PinMode.OUTPUT);
 
             //set analog pin A0 to ANALOG INPUT
-            arduino.pinMode("A0", PinMode.ANALOG);
-
-            IsConnected = true;
+            arduino.pinMode("A0", PinMode.ANALOG);Microsoft.SPOT.Hardware
         }
 
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            connection.end();
         }
 
-        public Task<string> SendAndReceiveData(string message)
+        public void ChangePin(string pin, PinMode m)
         {
-            return Task.Run(() => arduino.analogRead("A0").ToString());
+            arduino.pinMode(pin, m);
+        }
+
+        public Task<string> SendAndReceiveData(string message, int pin)
+        {
+            return Task.Run(() => "75");
+            //return Task.Run(() => arduino.analogRead("A"+pin).ToString());
         }
 
         public bool IsConnected { get { return isConnected; } set { SetValue(ref isConnected, value); } }
