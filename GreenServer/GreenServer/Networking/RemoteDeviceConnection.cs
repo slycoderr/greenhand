@@ -57,7 +57,7 @@ namespace GreenServer.Networking
             arduino.pinMode(13, PinMode.OUTPUT);
 
             //set analog pin A0 to ANALOG INPUT
-            arduino.pinMode("A0", PinMode.ANALOG);Microsoft.SPOT.Hardware
+            arduino.pinMode("A0", PinMode.ANALOG);
         }
 
         public void Disconnect()

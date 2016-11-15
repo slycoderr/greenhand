@@ -33,7 +33,7 @@ namespace GreenServer.Networking
             IsConnected = false;
         }
 
-        public async Task<string> SendAndReceiveData(string message)
+        public async Task<string> SendAndReceiveData(string message, int pin)
         {
             if (socket == null)
             {
