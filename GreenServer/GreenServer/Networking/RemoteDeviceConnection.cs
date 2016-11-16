@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using GreenHand.Portable;
 using Microsoft.Maker.RemoteWiring;
 using Microsoft.Maker.Serial;
@@ -12,7 +11,7 @@ namespace GreenServer.Networking
 {
     public class RemoteDeviceConnection : BindableBase, INetworkConnection
     {
-        private Microsoft.Maker.RemoteWiring.RemoteDevice arduino;
+        private RemoteDevice arduino;
         private IStream connection;
         private bool isConnected;
 
@@ -20,34 +19,57 @@ namespace GreenServer.Networking
         {
             return Task.Run(() =>
             {
-                connection = new UsbSerial("COM4");
+                connection = new UsbSerial("VID_2341", "PID_0043");
                 //I am using a constructor that accepts a device name or ID.
-                arduino = new Microsoft.Maker.RemoteWiring.RemoteDevice(connection);
+                arduino = new RemoteDevice(connection);
 
                 //add a callback method (delegate) to be invoked when the device is ready, refer to the Events section for more info
                 arduino.DeviceReady += Setup;
 
                 //always begin your IStream
-                connection.begin(115200, SerialConfig.SERIAL_8N1);
+                connection.begin(57600, SerialConfig.SERIAL_8N1);
                 connection.ConnectionLost += ConnectionOnConnectionLost;
                 connection.ConnectionFailed += ConnectionOnConnectionFailed;
                 connection.ConnectionEstablished += ConnectionOnConnectionEstablished;
             });
         }
 
-        private void ConnectionOnConnectionEstablished()
+        public void Disconnect()
         {
-            IsConnected = true;
+            connection.end();
         }
 
-        private void ConnectionOnConnectionFailed(string message)
+        public Task<string> SendAndReceiveData(string message, int pin)
         {
-            IsConnected = false;
+            //return Task.Run(() => "75");
+            return Task.Run(() => arduino.analogRead("A"+pin).ToString());
         }
 
-        private void ConnectionOnConnectionLost(string message)
+        public bool IsConnected
         {
-            IsConnected = false;
+            get { return isConnected; }
+            set { SetValue(ref isConnected, value, true); }
+        }
+
+        private async void ConnectionOnConnectionEstablished()
+        {
+            await
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => { IsConnected = true; });
+        }
+
+        private async void ConnectionOnConnectionFailed(string message)
+        {
+            await
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => { IsConnected = false; });
+        }
+
+        private async void ConnectionOnConnectionLost(string message)
+        {
+            await
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () => { IsConnected = false; });
         }
 
         //treat this function like "setup()" in an Arduino sketch.
@@ -60,22 +82,9 @@ namespace GreenServer.Networking
             arduino.pinMode("A0", PinMode.ANALOG);
         }
 
-        public void Disconnect()
-        {
-            connection.end();
-        }
-
         public void ChangePin(string pin, PinMode m)
         {
             arduino.pinMode(pin, m);
         }
-
-        public Task<string> SendAndReceiveData(string message, int pin)
-        {
-            return Task.Run(() => "75");
-            //return Task.Run(() => arduino.analogRead("A"+pin).ToString());
-        }
-
-        public bool IsConnected { get { return isConnected; } set { SetValue(ref isConnected, value); } }
     }
 }

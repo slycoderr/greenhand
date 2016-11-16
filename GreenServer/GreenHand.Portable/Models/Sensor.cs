@@ -53,20 +53,23 @@ namespace GreenHand.Portable.Models
             set { SetValue(ref type, value); }
         }
 
-        public async Task ReadValue()
+        public async Task<SensorValue> ReadValue()
         {
             if (Type == "TEMP")
             {
                 var rawValueAsString = await Network.SendAndReceiveData("ReadValue", 0);
-                byte rawAnalogValue = 0;
+                ushort rawAnalogValue = 0;
 
-                if (byte.TryParse( rawValueAsString, out rawAnalogValue))
+                if (ushort.TryParse( rawValueAsString, out rawAnalogValue))
                 {
                     var voltage = (rawAnalogValue * 0.004882814);
                     var degreesC = (voltage - 0.5) * 100.0;
                     var degreesF = degreesC * (9.0 / 5.0) + 32.0;
+                    var val = new SensorValue {Timestamp = DateTime.Now, Type = ValueType.Temperature, Value = degreesF};
 
-                    Readings.Add(new SensorValue { Timestamp = DateTime.Now, Type = ValueType.Temperature, Value = degreesF });
+                    Readings.Add(val);
+
+                    return val;
                 }
 
                 else
@@ -74,6 +77,8 @@ namespace GreenHand.Portable.Models
                     throw new Exception("TEMP wasn't a valid response: "+ rawValueAsString);
                 }
             }
+
+            throw new ArgumentException($"The type{Type} is unknown");
         }
     }
 }

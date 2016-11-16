@@ -12,81 +12,103 @@ int DS18S20_Pin = 4; //DS18S20 Signal pin on digital 2
 
 #include <WiFi.h>
 
-const char* ssid = "green";
-const char* password = "test1234";
+char* ssid = "AaronsCave";
+char* password = "tyranids127";
 
 const char* host = "192.168.0.105";
 
 const char* deviceId = "1";
 const char* deviceType = "TEMP";
 String deviceName = "TEMP1";
+const int led = 5;
 WiFiClient client;
-IPAddress server(192,168,0,105); 
+
+IPAddress server(192, 168, 0, 105);
 
 void setup()
 {
   Serial.begin(115200);
   Serial.println();
-    WiFi.begin(ssid, password);
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+  WiFi.begin(ssid, password);
+  pinMode(led, OUTPUT);
+  digitalWrite(led, LOW);
 
   printStatus();
 
+byte ledStatus = LOW;
+  Serial.println();
+  Serial.println("Connecting to: " + String(ssid));
+  // Set WiFi mode to station (as opposed to AP or AP_STA)
+//  WiFi.mode(WIFI_STA);
+
+  // WiFI.begin([ssid], [passkey]) initiates a WiFI connection
+  // to the stated [ssid], using the [passkey] as a WPA, WPA2,
+  // or WEP passphrase.
+  WiFi.begin(ssid, password);
+
+  // Use the WiFi.status() function to check if the ESP8266
+  // is connected to a WiFi network.
   while (WiFi.status() != WL_CONNECTED)
   {
-    delay(500);
-    Serial.println("connecting...");
-    
-  printStatus();
+    // Blink the LED
+    digitalWrite(led, ledStatus); // Write LED high/low
+    ledStatus = (ledStatus == HIGH) ? LOW : HIGH;
+
+    // Delays allow the ESP8266 to perform critical tasks
+    // defined outside of the sketch. These tasks include
+    // setting up, and maintaining, a WiFi connection.
+    delay(100);
+    // Potentially infinite loops are generally dangerous.
+    // Add delays -- allowing the processor to perform other
+    // tasks -- wherever possible.
   }
-  
-      IPAddress ip = WiFi.localIP();
-          Serial.println(ip);
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void printStatus()
 {
-  if(WiFi.status() == WL_CONNECTED)
-{
-  Serial.println("WL_CONNECTED...");
-}
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.println("WL_CONNECTED...");
+  }
 
-if(WiFi.status() == WL_NO_SHIELD)
-{
-  Serial.println("WL_NO_SHIELD...");
-}
+  if (WiFi.status() == WL_NO_SHIELD)
+  {
+    Serial.println("WL_NO_SHIELD...");
+  }
 
-if(WiFi.status() == WL_IDLE_STATUS)
-{
-  Serial.println("WL_IDLE_STATUS...");
-}
+  if (WiFi.status() == WL_IDLE_STATUS)
+  {
+    Serial.println("WL_IDLE_STATUS...");
+  }
 
 
-if(WiFi.status() == WL_NO_SSID_AVAIL)
-{
-  Serial.println("WL_NO_SSID_AVAIL...");
-}
+  if (WiFi.status() == WL_NO_SSID_AVAIL)
+  {
+    Serial.println("WL_NO_SSID_AVAIL...");
+  }
 
-if(WiFi.status() == WL_SCAN_COMPLETED)
-{
-  Serial.println("WL_SCAN_COMPLETED...");
-}
+  if (WiFi.status() == WL_SCAN_COMPLETED)
+  {
+    Serial.println("WL_SCAN_COMPLETED...");
+  }
 
-if(WiFi.status() == WL_CONNECT_FAILED)
-{
-  Serial.println("WL_CONNECT_FAILED...");
-}
+  if (WiFi.status() == WL_CONNECT_FAILED)
+  {
+    Serial.println("WL_CONNECT_FAILED...");
+  }
 
-if(WiFi.status() == WL_CONNECTION_LOST)
-{
-  Serial.println("WL_CONNECTION_LOST...");
-}
+  if (WiFi.status() == WL_CONNECTION_LOST)
+  {
+    Serial.println("WL_CONNECTION_LOST...");
+  }
 
-if(WiFi.status() == WL_DISCONNECTED)
-{
-  Serial.println("WL_DISCONNECTED...");
-}
+  if (WiFi.status() == WL_DISCONNECTED)
+  {
+    Serial.println("WL_DISCONNECTED...");
+  }
 }
 
 void connect()
@@ -94,16 +116,16 @@ void connect()
   if (client.connect(server, 80))
   {
     IPAddress ip = WiFi.localIP();
-     printStatus();
+    printStatus();
     Serial.print(" connected with ip ");
     Serial.println(ip);
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(led, HIGH);
   }
   else
   {
     Serial.println("failed to connect");
-     printStatus();
-    digitalWrite(LED_BUILTIN, LOW);
+    printStatus();
+    digitalWrite(led, LOW);
   }
 }
 
@@ -117,31 +139,31 @@ void loop(void)
 
   while (client.connected())
   {
-      String line = client.readStringUntil('\n');
-      Serial.println(line);
+    String line = client.readStringUntil('\n');
+    Serial.println(line);
 
-      if (line == "ReadValue")
+    if (line == "ReadValue")
+    {
+      if (deviceType == "TEMP")
       {
-        if (deviceType == "TEMP")
-        {
-          //float temperature = getTemp();
-          //int tmp = (int) temperature;
+        //float temperature = getTemp();
+        //int tmp = (int) temperature;
 
-          Serial.println(75);
-          client.print(75);
-        }
+        Serial.println(75);
+        client.print(75);
       }
+    }
 
-      else if (line == "ReadName")
-      {
-          Serial.println(deviceName);
-        client.print(deviceName);
-      }
-    
+    else if (line == "ReadName")
+    {
+      Serial.println(deviceName);
+      client.print(deviceName);
+    }
+
   }
 
-digitalWrite(LED_BUILTIN, LOW);
-   printStatus();
+  digitalWrite(led, LOW);
+  printStatus();
   client.stop();
 }
 
