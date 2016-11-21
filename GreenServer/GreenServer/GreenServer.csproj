@@ -101,15 +101,15 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="Networking\RemoteDeviceConnection.cs" />
-    <Compile Include="Networking\SensorSocketConnection.cs" />
+    <Compile Include="Networking\BluetoothDeviceConnection.cs" />
+    <Compile Include="Networking\WiFiDeviceConnection.cs" />
+    <Compile Include="Networking\USBDeviceConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="GreenServer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />

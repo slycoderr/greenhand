@@ -29,13 +29,13 @@ namespace GreenHand.Portable.Models
             set { SetValue(ref name, value); }
         }
 
-        public string IpAddress
+        public string DeviceAddress
         {
             get { return ipAddress; }
             set { SetValue(ref ipAddress, value); }
         }
 
-        public int Port
+        public int SecondaryDeviceAddress
         {
             get { return port; }
             set { SetValue(ref port, value); }
@@ -58,9 +58,8 @@ namespace GreenHand.Portable.Models
             if (Type == "TEMP")
             {
                 var rawValueAsString = await Network.SendAndReceiveData("ReadValue", 0);
-                ushort rawAnalogValue = 0;
 
-                if (ushort.TryParse( rawValueAsString, out rawAnalogValue))
+                if (ushort.TryParse( rawValueAsString, out ushort rawAnalogValue))
                 {
                     var voltage = (rawAnalogValue * 0.004882814);
                     var degreesC = (voltage - 0.5) * 100.0;

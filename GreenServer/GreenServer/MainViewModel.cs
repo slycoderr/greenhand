@@ -32,7 +32,7 @@ namespace GreenServer
         {
             try
             {
-                await SelectedSensor.Network.Connect(SelectedSensor.IpAddress, SelectedSensor.Port);
+                await SelectedSensor.Network.Connect(SelectedSensor.DeviceAddress, SelectedSensor.SecondaryDeviceAddress);
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace GreenServer
 
         private void AddSenor()
         {
-            var s = new Sensor(new RemoteDeviceConnection());
+            var s = new Sensor(new BluetoothDeviceConnection()) { DeviceAddress = "RNBT-E072" };
             Sensors.Add(s);
             SelectedSensor = s;
         }
