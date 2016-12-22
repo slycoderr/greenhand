@@ -11,15 +11,10 @@ namespace GreenHand.Portable.Models
         private string ipAddress;
         private int port;
         private string id;
-        private string type;
+        private SensorReadingType type;
+        private bool autoRetryConnection = true;
 
-        public Sensor(INetworkConnection connection)
-        {
-            Network = connection;
-            Type = "TEMP";
-        }
-
-        public INetworkConnection Network { get; }
+        public INetworkConnection Network { get; set; }
 
         public ObservableCollection<SensorValue> Readings { get; set; } = new ObservableCollection<SensorValue>();
 
@@ -27,6 +22,12 @@ namespace GreenHand.Portable.Models
         {
             get { return name; }
             set { SetValue(ref name, value); }
+        }
+
+        public bool AutoRetryConnection
+        {
+            get { return autoRetryConnection; }
+            set { SetValue(ref autoRetryConnection, value); }
         }
 
         public string DeviceAddress
@@ -47,7 +48,7 @@ namespace GreenHand.Portable.Models
             set { SetValue(ref id, value); }
         }
 
-        public string Type
+        public SensorReadingType Type
         {
             get { return type; }
             set { SetValue(ref type, value); }
@@ -55,29 +56,7 @@ namespace GreenHand.Portable.Models
 
         public async Task<SensorValue> ReadValue()
         {
-            if (Type == "TEMP")
-            {
-                var rawValueAsString = await Network.SendAndReceiveData("ReadValue", 0);
-
-                if (ushort.TryParse( rawValueAsString, out ushort rawAnalogValue))
-                {
-                    var voltage = (rawAnalogValue * 0.004882814);
-                    var degreesC = (voltage - 0.5) * 100.0;
-                    var degreesF = degreesC * (9.0 / 5.0) + 32.0;
-                    var val = new SensorValue {Timestamp = DateTime.Now, Type = ValueType.Temperature, Value = degreesF};
-
-                    Readings.Add(val);
-
-                    return val;
-                }
-
-                else
-                {
-                    throw new Exception("TEMP wasn't a valid response: "+ rawValueAsString);
-                }
-            }
-
-            throw new ArgumentException($"The type{Type} is unknown");
+            return await Network.RetrieveValue(Type);
         }
     }
 }

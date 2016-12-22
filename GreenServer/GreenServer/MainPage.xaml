@@ -6,13 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:GreenHand.Portable.Models" DataContext="{StaticResource MainViewModel}"
-    mc:Ignorable="d">
+    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800">
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Add" Label="add sensor" Command="{Binding AddSensorCommand}"/>
-            <AppBarButton Icon="AttachCamera" Label="connect sensor" Command="{Binding SensorConnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
-            <AppBarButton Icon="DisconnectDrive" Label="disconnect sensor" Command="{Binding SensorDisconnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
-            <AppBarButton Icon="Remove" Label="remove sensor" Command="{Binding SensorConnectCommand}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Grid.Row="4" HorizontalAlignment="Right" Icon="AttachCamera" Label="connect sensor" Command="{Binding SensorConnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Grid.Row="4" Icon="DisconnectDrive" Label="disconnect sensor" Command="{Binding SensorDisconnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Grid.Row="4" Grid.Column="1" Icon="Delete"  Label="remove sensor" Command="{Binding SensorConnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -35,20 +35,43 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="Name"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ip"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Port" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ip" Margin="5"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Port"  Margin="5"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Reading Type" Margin="5" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Connection Status" Margin="5" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Auto Reconnect" Margin="5" />
 
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <CheckBox IsEnabled="False" Content="Connected" Grid.Row="3" Grid.Column="1" IsChecked="{Binding Network.IsConnected}"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SecondaryDeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding Type}" PlaceholderText="Reading Type" Margin="5">
+                            <ComboBoxItem Content="Temperature"/>
+                            <ComboBoxItem Content="Humidity"/>
+                        </ComboBox>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Network.NetworkStatus, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding AutoRetryConnection, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        <ListView Grid.Column="1" ItemsSource="{Binding Log}"/>
+
+        <ListView Grid.Column="1" ItemsSource="{Binding Log}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>-->
+        </ListView>
     </Grid>
 </Page>
+

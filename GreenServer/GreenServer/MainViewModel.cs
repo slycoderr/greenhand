@@ -10,6 +10,7 @@ using Windows.System.Threading;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Command;
+using GreenHand.Portable;
 using GreenHand.Portable.Models;
 using GreenServer.Networking;
 using Slycoder.Portable.MVVM;
@@ -60,7 +61,7 @@ namespace GreenServer
             AppendLog("Starting Read");
 
             //get values from sensors
-            foreach (var sensor in Sensors.Where(s => s.Network.IsConnected))
+            foreach (var sensor in Sensors.Where(s => s.Network.NetworkStatus == NetworkStatus.Connected))
             {
                 try
                 {
@@ -79,7 +80,8 @@ namespace GreenServer
 
         private void AddSenor()
         {
-            var s = new Sensor(new BluetoothDeviceConnection()) { DeviceAddress = "RNBT-E072" };
+            var s = new Sensor() { DeviceAddress = "192.168.0.100", SecondaryDeviceAddress = 3030};
+            s.Network = new WiFiDeviceConnection(s);
             Sensors.Add(s);
             SelectedSensor = s;
         }

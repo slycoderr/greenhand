@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using GreenHand.Portable;
+using GreenHand.Portable.Models;
 using Microsoft.Maker.RemoteWiring;
 using Microsoft.Maker.Serial;
 using Slycoder.Portable.MVVM;
@@ -13,7 +14,8 @@ namespace GreenServer.Networking
     {
         private RemoteDevice arduino;
         private IStream connection;
-        private bool isConnected;
+
+        private NetworkStatus networkStatus = NetworkStatus.NotConnected;
 
         public Task Connect(string ip, int port)
         {
@@ -26,11 +28,13 @@ namespace GreenServer.Networking
                 //add a callback method (delegate) to be invoked when the device is ready, refer to the Events section for more info
                 arduino.DeviceReady += Setup;
 
-                //always begin your IStream
-                connection.begin(57600, SerialConfig.SERIAL_8N1);
                 connection.ConnectionLost += ConnectionOnConnectionLost;
                 connection.ConnectionFailed += ConnectionOnConnectionFailed;
                 connection.ConnectionEstablished += ConnectionOnConnectionEstablished;
+
+                //always begin your IStream
+                connection.begin(57600, SerialConfig.SERIAL_8N1);
+
             });
         }
 
@@ -45,32 +49,28 @@ namespace GreenServer.Networking
             return Task.Run(() => arduino.analogRead("A"+pin).ToString());
         }
 
-        public bool IsConnected
-        {
-            get { return isConnected; }
-            set { SetValue(ref isConnected, value, true); }
-        }
-
         private async void ConnectionOnConnectionEstablished()
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () => { IsConnected = true; });
+                    () => { NetworkStatus = NetworkStatus.Connected; });
         }
 
         private async void ConnectionOnConnectionFailed(string message)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () => { IsConnected = false; });
+                    () => { NetworkStatus = NetworkStatus.ConnectionFailed; });
         }
 
         private async void ConnectionOnConnectionLost(string message)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () => { IsConnected = false; });
+                    () => { NetworkStatus = NetworkStatus.ConnectionLost; });
         }
+
+        public NetworkStatus NetworkStatus { get { return networkStatus; } set { SetValue(ref networkStatus, value); } }
 
         //treat this function like "setup()" in an Arduino sketch.
         public void Setup()
@@ -85,6 +85,11 @@ namespace GreenServer.Networking
         public void ChangePin(string pin, PinMode m)
         {
             arduino.pinMode(pin, m);
+        }
+
+        public Task<SensorValue> RetrieveValue(SensorReadingType type)
+        {
+            throw new NotImplementedException();
         }
     }
 }

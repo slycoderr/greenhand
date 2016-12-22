@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace GreenHand.Portable.Models
 {
-    public enum ValueType
-    {
-        Temperature,
-        Humidity,
-        pH
 
-    }
     public class SensorValue
     {
-        public ValueType Type { get; set; }
+        public SensorReadingType Type { get; set; }
         public double Value { get; set; }
         public DateTime Timestamp { get; set; }
     }
