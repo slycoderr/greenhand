@@ -138,9 +138,9 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GreenHandClient\GreenHandClient.csproj">
+    <ProjectReference Include="..\GreenHandClient\GreenHand.Mobile.csproj">
       <Project>{E8B623E0-0E87-4530-847B-46410892054F}</Project>
-      <Name>GreenHandClient</Name>
+      <Name>GreenHand.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

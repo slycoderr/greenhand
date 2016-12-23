@@ -8,8 +8,8 @@
     <ProjectGuid>{E8B623E0-0E87-4530-847B-46410892054F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GreenHandClient</RootNamespace>
-    <AssemblyName>GreenHandClient</AssemblyName>
+    <RootNamespace>GreenHand.Mobile</RootNamespace>
+    <AssemblyName>GreenHand.Mobile</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

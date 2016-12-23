@@ -128,9 +128,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GreenHandClient\GreenHandClient.csproj">
+    <ProjectReference Include="..\GreenHandClient\GreenHand.Client.csproj">
       <Project>{E8B623E0-0E87-4530-847B-46410892054F}</Project>
-      <Name>GreenHandClient</Name>
+      <Name>GreenHand.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

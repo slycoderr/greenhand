@@ -7,8 +7,8 @@
     <ProjectGuid>{817C2638-6B56-4B67-A7EC-27C3EFD33865}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GreenServer</RootNamespace>
-    <AssemblyName>GreenServer</AssemblyName>
+    <RootNamespace>GreenHand.Server.Local</RootNamespace>
+    <AssemblyName>GreenHand.Server.Local</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
