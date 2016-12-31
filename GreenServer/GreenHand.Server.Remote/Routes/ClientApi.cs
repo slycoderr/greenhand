@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GreenHand.Server.Remote.Common
+namespace GreenHand.Server.Remote.Routes
 {
-    public class Class1
+    class ClientApi
     {
     }
 }

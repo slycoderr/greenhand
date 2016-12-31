@@ -77,12 +77,24 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routes\ClientApi.cs" />
+    <Compile Include="Routes\SensorController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GreenHand.Portable\GreenHand.Portable.csproj">
+      <Project>{e85631b2-d4fe-4106-812c-381748465205}</Project>
+      <Name>GreenHand.Portable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GreenHand.Server.Remote.Common\GreenHand.Server.Remote.Common.csproj">
+      <Project>{e4557227-9869-4a6c-b1c2-d15e7c55a7e9}</Project>
+      <Name>GreenHand.Server.Remote.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
