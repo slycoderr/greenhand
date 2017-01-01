@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using GalaSoft.MvvmLight.Command;
 using GreenHand.Portable;
 using GreenHand.Portable.Models;
 using GreenServer.Networking;
+using Newtonsoft.Json;
 using Slycoder.Portable.MVVM;
 
 namespace GreenServer
@@ -66,6 +68,9 @@ namespace GreenServer
                 try
                 {
                     var val = await sensor.ReadValue();
+
+                    await LogData(val);
+
                     AppendLog($"Read from {sensor.Name} without any exceptions. Got value:{val.Value} type: ${val.Type} at {val.Timestamp:G}");
                 }
                 catch (Exception ex)
@@ -104,6 +109,14 @@ namespace GreenServer
         private void StopPollingValues()
         {
             valuePollTimer?.Cancel();
+        }
+
+        public async Task LogData(SensorValue value)
+        {
+            using (var client = new HttpClient())
+            {
+                await client.PostAsync("http://localhost:9101/greenhand/StoreData/", new StringContent(JsonConvert.SerializeObject(value)));
+            }
         }
     }
 }

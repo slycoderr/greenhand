@@ -52,29 +52,4 @@ namespace GreenHand.Server.Remote
             appBuilder.UseWebApi(config);
         }
     }
-
-    [RoutePrefix("GreenHand")]
-    public class TelemeWizController : ApiController
-    {
-        [Route("logException")]
-        public async Task<IHttpActionResult> LogTelemetry()
-        {
-            //try
-            //{
-            //    await TelemeWizServer.LogTelemetry(e);
-
-            //    Console.WriteLine("log ex successful");
-            //    return Ok();
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("log failed");
-            //    Console.WriteLine(ex.Message);
-            //    File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "log.txt"), ex.ToString());
-            //    return Content(HttpStatusCode.BadRequest, new HttpError(ex.Message));
-            //}
-
-            return Ok();
-        }
-    }
 }

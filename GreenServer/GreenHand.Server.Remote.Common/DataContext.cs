@@ -13,7 +13,7 @@ namespace GreenHand.Server.Remote.Common
         public DbSet<SensorValue> SensorValues { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override async void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=data.db");
         }
