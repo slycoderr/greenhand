@@ -83,16 +83,29 @@ namespace GreenServer.Networking
         //treat this function like "setup()" in an Arduino sketch.
         public void Setup()
         {
-            //set digital pin 13 to OUTPUT
-            //arduino.pinMode(4, PinMode.OUTPUT);
             autoRetryTimer = ThreadPoolTimer.CreatePeriodicTimer(AutoRetryTimerOnTick, TimeSpan.FromSeconds(30));
+
+            if (Sensor.Type == SensorReadingType.Humidity)
+            {
+                arduino.pinMode("A0", PinMode.INPUT);
+            }
         }
 
         public Task<SensorValue> RetrieveValue(SensorReadingType type)
         {
             return Task.Run(() =>
             {
-                return new SensorValue(){ Timestamp = DateTime.Now, Type = type, Value = 75};
+                switch (Sensor.Type)
+                {
+                    case SensorReadingType.Temperature:
+                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = 75 };
+                    case SensorReadingType.Humidity:
+                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = arduino.analogRead("A0") };
+                    case SensorReadingType.pH:
+                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = 75 };
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             });
         }
     }

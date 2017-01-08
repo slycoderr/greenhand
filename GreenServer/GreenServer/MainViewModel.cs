@@ -13,6 +13,7 @@ using Windows.UI.Xaml;
 using GalaSoft.MvvmLight.Command;
 using GreenHand.Portable;
 using GreenHand.Portable.Models;
+using GreenHand.Server.Local;
 using GreenServer.Networking;
 using Newtonsoft.Json;
 using Slycoder.Portable.MVVM;
@@ -76,6 +77,7 @@ namespace GreenServer
                 catch (Exception ex)
                 {
                     AppendLog($"Read from {sensor.Name} with exception:{ex}");
+                    await Telemetry.Client.LogException(ex);
                 }
 
             }

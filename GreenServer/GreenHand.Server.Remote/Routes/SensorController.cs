@@ -28,6 +28,7 @@ namespace GreenHand.Server.Remote.Routes
             {
                 Console.WriteLine("store data failed");
                 Console.WriteLine(ex.Message);
+                await Telemetry.Client.LogException(ex);
                 File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "log.txt"), ex.ToString());
                 return Content(HttpStatusCode.BadRequest, new HttpError(ex.Message));
             }

@@ -6,6 +6,8 @@ using System.Web.Http;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
 using Owin;
+using TelemeWiz;
+using TelemeWiz.Common.Models;
 
 namespace GreenHand.Server.Remote
 {
@@ -25,6 +27,7 @@ namespace GreenHand.Server.Remote
 
         private static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             var baseAddress = DetermineBaseAddress();
 
             using (WebApp.Start<Startup>(baseAddress))
@@ -33,6 +36,11 @@ namespace GreenHand.Server.Remote
                 Console.WriteLine("Press Enter to Exit");
                 Console.ReadLine();
             }
+        }
+
+        private static async void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            await Telemetry.Client.LogException((Exception) e.ExceptionObject);
         }
     }
 
@@ -51,5 +59,10 @@ namespace GreenHand.Server.Remote
 
             appBuilder.UseWebApi(config);
         }
+    }
+
+    public static class Telemetry
+    {
+        public static readonly TelemetryClient Client = new TelemetryClient(new Metadata(Guid.NewGuid(), Environment.OSVersion.VersionString, typeof(Program).Assembly.GetName().Name, typeof(Program).Assembly.GetName().Version.ToString())){ServiceUrl = "http://localhost:6969"};
     }
 }
