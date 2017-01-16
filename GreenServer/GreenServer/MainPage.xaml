@@ -40,7 +40,7 @@
                         <TextBlock Text="Name"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Ip" Margin="5"/>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Port"  Margin="5"/>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Reading Type" Margin="5" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Reading ReadingType" Margin="5" />
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Connection Status" Margin="5" />
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Auto Reconnect" Margin="5" />
 
@@ -48,7 +48,7 @@
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SecondaryDeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding Type}" PlaceholderText="Reading Type" Margin="5">
+                        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding Type}" PlaceholderText="Reading ReadingType" Margin="5">
                             <ComboBoxItem Content="Temperature"/>
                             <ComboBoxItem Content="Humidity"/>
                         </ComboBox>

@@ -30,7 +30,7 @@ namespace GreenHand.Server.Remote.Routes
                 Console.WriteLine(ex.Message);
                 await Telemetry.Client.LogException(ex);
                 File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "log.txt"), ex.ToString());
-                return Content(HttpStatusCode.BadRequest, new HttpError(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, new HttpError(ex.Message));
             }
         }
     }

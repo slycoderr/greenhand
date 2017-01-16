@@ -29,7 +29,7 @@
     <DeviceCapability Name="bluetooth" />
     <DeviceCapability Name="serialcommunication">
       <Device Id="any">
-        <Function Type="name:serialPort" />
+        <Function ReadingType="name:serialPort" />
       </Device>
     </DeviceCapability>
   </Capabilities>

@@ -10,8 +10,12 @@ namespace GreenHand.Portable.Models
     public class SensorValue
     {
         public Guid Id { get; set; }
-        public SensorReadingType Type { get; set; }
-        public double Value { get; set; }
+        public SensorReadingType ReadingType { get; set; }
+
+        /// <summary>
+        /// The resulting value read from the sensor
+        /// </summary>
+        public double ReadResult { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

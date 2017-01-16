@@ -98,11 +98,11 @@ namespace GreenServer.Networking
                 switch (Sensor.Type)
                 {
                     case SensorReadingType.Temperature:
-                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = 75 };
+                        return new SensorValue { Timestamp = DateTime.Now, ReadingType = Sensor.Type, ReadResult = 75 };
                     case SensorReadingType.Humidity:
-                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = arduino.analogRead("A0") };
+                        return new SensorValue { Timestamp = DateTime.Now, ReadingType = Sensor.Type, ReadResult = arduino.analogRead("A0") };
                     case SensorReadingType.pH:
-                        return new SensorValue { Timestamp = DateTime.Now, Type = Sensor.Type, Value = 75 };
+                        return new SensorValue { Timestamp = DateTime.Now, ReadingType = Sensor.Type, ReadResult = 75 };
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

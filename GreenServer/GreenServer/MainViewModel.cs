@@ -72,7 +72,7 @@ namespace GreenServer
 
                     await LogData(val);
 
-                    AppendLog($"Read from {sensor.Name} without any exceptions. Got value:{val.Value} type: ${val.Type} at {val.Timestamp:G}");
+                    AppendLog($"Read from {sensor.Name} without any exceptions. Got value:{val.ReadResult} type: ${val.ReadingType} at {val.Timestamp:G}");
                 }
                 catch (Exception ex)
                 {

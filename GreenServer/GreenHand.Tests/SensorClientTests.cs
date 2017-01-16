@@ -17,7 +17,7 @@ namespace GreenHand.Tests
         [TestMethod]
         public async Task LogValue()
         {
-            var value = new SensorValue() {Timestamp = DateTime.Now, Type = SensorReadingType.Temperature, Value = 50};
+            var value = new SensorValue() {Timestamp = DateTime.Now, ReadingType = SensorReadingType.Humidity, ReadResult = 50};
 
             using (var client = new HttpClient())
             {

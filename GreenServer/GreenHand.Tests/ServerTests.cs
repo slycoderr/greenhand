@@ -11,11 +11,11 @@ namespace GreenHand.Tests
     public class ServerTests
     {
         [TestMethod]
-        public async Task InsertSesnorValue()
+        public async Task InsertSensorValue()
         {
             SensorApi api = new SensorApi();
 
-            await api.StoreSensorData(new SensorValue(){Timestamp = DateTime.Now, Type = SensorReadingType.Temperature, Value = 50});
+            await api.StoreSensorData(new SensorValue(){Timestamp = DateTime.Now, ReadingType = SensorReadingType.Humidity, ReadResult = 50});
         }
     }
 }
