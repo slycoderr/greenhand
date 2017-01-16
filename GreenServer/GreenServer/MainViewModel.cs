@@ -87,7 +87,7 @@ namespace GreenServer
 
         private void AddSenor()
         {
-            var s = new Sensor() { DeviceAddress = "192.168.0.100", SecondaryDeviceAddress = 3030};
+            var s = new Sensor() { DeviceAddress = "192.168.0.100", SecondaryDeviceAddress = 3030, Type = SensorReadingType.Humidity};
             s.Network = new WiFiDeviceConnection(s);
             Sensors.Add(s);
             SelectedSensor = s;

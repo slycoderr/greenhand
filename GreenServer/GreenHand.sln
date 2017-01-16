@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26014.0
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHand.Server.Local", "GreenServer\GreenHand.Server.Local.csproj", "{817C2638-6B56-4B67-A7EC-27C3EFD33865}"
 EndProject
@@ -17,7 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHand.Portable", "Green
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sensor", "Sensor", "{C6439744-7827-4762-BBB6-4E3F011EF208}"
 	ProjectSection(SolutionItems) = preProject
-		Sensor\Sensor.ino = Sensor\Sensor.ino
+		..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\StandardFirmataWiFi_2.ino = ..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\StandardFirmataWiFi_2.ino
+		..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\wifiConfig.h = ..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\wifiConfig.h
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHand.Client.Windows", "GreenHand.Client.Windows\GreenHand.Client.Windows.csproj", "{3624E0AF-4A39-4B64-B3CD-3BAAB231275A}"
