@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Diagnostics;
+using Microsoft.Owin.Hosting;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using Microsoft.WindowsAzure.Storage;
 
 namespace RestAPI
 {
@@ -16,6 +12,7 @@ namespace RestAPI
     {
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
+        private IDisposable app;
 
         public override void Run()
         {
@@ -23,11 +20,11 @@ namespace RestAPI
 
             try
             {
-                this.RunAsync(this.cancellationTokenSource.Token).Wait();
+                RunAsync(cancellationTokenSource.Token).Wait();
             }
             finally
             {
-                this.runCompleteEvent.Set();
+                runCompleteEvent.Set();
             }
         }
 
@@ -36,12 +33,20 @@ namespace RestAPI
             // Set the maximum number of concurrent connections
             ServicePointManager.DefaultConnectionLimit = 12;
 
-            // For information on handling configuration changes
-            // see the MSDN topic at https://go.microsoft.com/fwlink/?LinkId=166357.
-
-            bool result = base.OnStart();
+            var result = base.OnStart();
+            var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["Endpoint1"];
+            string baseUri = $"{endpoint.Protocol}://{endpoint.IPEndpoint}";
 
             Trace.TraceInformation("RestAPI has been started");
+
+            using (WebApp.Start<Startup>(baseUri))
+            {
+                Console.WriteLine("Connected at IP : {0}", baseUri);
+                Console.WriteLine("Press Enter to Exit");
+                Console.ReadLine();
+            }
+
+            app = WebApp.Start<Startup>(new StartOptions(baseUri));
 
             return result;
         }
@@ -50,8 +55,10 @@ namespace RestAPI
         {
             Trace.TraceInformation("RestAPI is stopping");
 
-            this.cancellationTokenSource.Cancel();
-            this.runCompleteEvent.WaitOne();
+            cancellationTokenSource.Cancel();
+            runCompleteEvent.WaitOne();
+
+            app?.Dispose();
 
             base.OnStop();
 
@@ -60,11 +67,10 @@ namespace RestAPI
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
-            // TODO: Replace the following with your own logic.
             while (!cancellationToken.IsCancellationRequested)
             {
                 Trace.TraceInformation("Working");
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
         }
     }

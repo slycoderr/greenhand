@@ -21,7 +21,7 @@ namespace GreenHand.Tests
 
             using (var client = new HttpClient())
             {
-                var response = await client.PostAsync("http://localhost:9101/greenhand/StoreData/", new StringContent(JsonConvert.SerializeObject(value)));
+                var response = await client.PostAsync("http://greenhandrest.cloudapp.net:80/greenhand/StoreData/", new StringContent(JsonConvert.SerializeObject(value)));
 
                 Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
             }
