@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Networking\BluetoothDeviceConnection.cs" />
+    <Compile Include="Networking\SesnorHelper.cs" />
     <Compile Include="Networking\WiFiDeviceConnection.cs" />
     <Compile Include="Networking\USBDeviceConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
