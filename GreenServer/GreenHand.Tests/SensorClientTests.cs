@@ -26,5 +26,16 @@ namespace GreenHand.Tests
                 Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
             }
         }
+
+        [TestMethod]
+        public async Task LogValue2()
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.PostAsync("http://greenhandrest.cloudapp.net:80/greenhand/StoreData/temp/65.5", null);
+
+                Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
+            }
+        }
     }
 }
