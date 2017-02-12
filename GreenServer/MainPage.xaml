@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="GreenServer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GreenServer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:GreenHand.Portable.Models" DataContext="{StaticResource MainViewModel}"
+    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add" Label="add sensor" Command="{Binding AddSensorCommand}"/>
+            <AppBarButton Grid.Row="4" HorizontalAlignment="Right" Icon="AttachCamera" Label="connect sensor" Command="{Binding SensorConnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Grid.Row="4" Icon="DisconnectDrive" Label="disconnect sensor" Command="{Binding SensorDisconnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+            <AppBarButton Grid.Row="4" Grid.Column="1" Icon="Delete"  Label="remove sensor" Command="{Binding SensorConnectCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding SelectedItem, ElementName=SensorListView}"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="SensorListView" Header="Manage Sensors" ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Name"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Ip" Margin="5"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Port"  Margin="5"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Reading ReadingType" Margin="5" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Connection Status" Margin="5" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Auto Reconnect" Margin="5" />
+
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SecondaryDeviceAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding Type}" PlaceholderText="Reading ReadingType" Margin="5">
+                            <ComboBoxItem Content="Temperature"/>
+                            <ComboBoxItem Content="Humidity"/>
+                        </ComboBox>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Network.NetworkStatus, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding AutoRetryConnection, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView Grid.Column="1" ItemsSource="{Binding Log}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <!--<ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </ListView.ItemContainerStyle>-->
+        </ListView>
+    </Grid>
+</Page>
+
