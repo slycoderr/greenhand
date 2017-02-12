@@ -15,19 +15,6 @@ namespace GreenHand.Tests
     public class SensorClientTests
     {
         [TestMethod]
-        public async Task LogValue()
-        {
-            var value = new SensorValue() {Timestamp = DateTime.Now, ReadingType = SensorReadingType.Humidity, ReadResult = 50};
-
-            using (var client = new HttpClient())
-            {
-                var response = await client.PostAsync("http://greenhandrest.cloudapp.net:80/sensor/store/", new StringContent(JsonConvert.SerializeObject(value)));
-
-                Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
-            }
-        }
-
-        [TestMethod]
         public async Task LogValue2()
         {
             using (var client = new HttpClient())
@@ -39,11 +26,11 @@ namespace GreenHand.Tests
         }
 
         [TestMethod]
-        public async Task LogValue3()
+        public async Task GetSensorValues()
         {
             using (var client = new HttpClient())
             {
-                var response = await client.PostAsync("http://greenhandrest.cloudapp.net:80/sensor/store/temp/65.5", null);
+                var response = await client.GetAsync("http://greenhandrest.cloudapp.net:80/client/store/temp/65.5");
 
                 Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
             }

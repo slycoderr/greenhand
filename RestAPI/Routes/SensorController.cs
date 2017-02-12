@@ -14,27 +14,6 @@ namespace RestAPI.Routes
     {
         private readonly SensorApi api = new SensorApi();
 
-        [Route("store")]
-        //[Authorize]
-        public async Task<IHttpActionResult> PostSensorData(SensorValue value)
-        {
-            try
-            {
-                await api.StoreSensorData(value);
-
-                Console.WriteLine("store data successful");
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("store data failed");
-                Console.WriteLine(ex.Message);
-                //await Telemetry.Client.LogException(ex);
-                File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "log.txt"), ex.ToString());
-                return Content(HttpStatusCode.InternalServerError, new HttpError(ex.Message));
-            }
-        }
-
         [Route("store/temp/{data}")]
         //[Authorize]
         public async Task<IHttpActionResult> PostSensorData(double data)
