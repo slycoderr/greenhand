@@ -9,13 +9,13 @@ using GreenHand.Server.Remote.Common.SensorApi;
 
 namespace RestAPI.Routes
 {
-    [RoutePrefix("sensor")]
+    [RoutePrefix("sensor"), Authorize]
     public class SensorController : ApiController
     {
         private readonly SensorApi api = new SensorApi();
 
         [Route("store/temp/{data}")]
-        //[Authorize]
+
         public async Task<IHttpActionResult> PostSensorData(double data)
         {
             try
