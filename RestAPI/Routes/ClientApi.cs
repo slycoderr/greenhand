@@ -8,7 +8,7 @@ namespace RestAPI.Routes
 {
     class ClientApi
     {
-        [RoutePrefix("client")]
+        [RoutePrefix("client"), Authorize]
         public class SensorController : ApiController
         {
             private readonly GreenHand.Server.Remote.Common.ClientApi.ClientApi api = new GreenHand.Server.Remote.Common.ClientApi.ClientApi();
