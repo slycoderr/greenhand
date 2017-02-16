@@ -9,7 +9,7 @@ namespace RestAPI
     {
         public void Configuration(IAppBuilder appBuilder)
         {
-            // Configure Web API for self-host. 
+            ConfigureOAuth(appBuilder);
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
 
@@ -20,5 +20,20 @@ namespace RestAPI
 
             appBuilder.UseWebApi(config);
         }
+    }
+    
+    public void ConfigureOAuth(IAppBuilder app)
+    {
+        OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
+        {
+            AllowInsecureHttp = false,
+            TokenEndpointPath = new PathString("/givemeadamntoken"),
+            AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+            Provider = new SimpleAuthorizationServerProvider(), 
+        };
+
+        // Create Tokens
+        app.UseOAuthAuthorizationServer(OAuthServerOptions);
+        app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
     }
 }
