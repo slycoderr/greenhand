@@ -6,11 +6,13 @@
       <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" />
     </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+      <InputEndpoint name="https" protocol="https" port="443" certificate="GreenHandTest" />
+      <InputEndpoint name="http" protocol="http" port="80" />
     </Endpoints>
     <Imports>
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>
+
   </WorkerRole>
 </ServiceDefinition>

@@ -80,6 +80,9 @@
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="Slycoder.Portable, Version=1.0.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Slycoder.Portable.1.0.21.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10+xamarinmac20\Slycoder.Portable.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -117,6 +120,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GreenHand.Client\GreenHand.Client.csproj">
+      <Project>{e89c5427-f265-45d0-b07c-7906d63cb825}</Project>
+      <Name>GreenHand.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GreenHand.Portable\GreenHand.Portable.csproj">
       <Project>{E85631B2-D4FE-4106-812C-381748465205}</Project>
       <Name>GreenHand.Portable</Name>

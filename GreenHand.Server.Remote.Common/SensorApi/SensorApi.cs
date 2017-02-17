@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,14 @@ namespace GreenHand.Server.Remote.Common.SensorApi
                 }
             }
             
+        }
+
+        public async Task<IEnumerable<SensorValue>> GetSensorValues()
+        {
+            using (var db = new GreenHandContext())
+            {
+                return await db.SensorValues.ToListAsync();
+            }
         }
     }
 }

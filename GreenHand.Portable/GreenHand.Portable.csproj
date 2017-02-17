@@ -41,6 +41,7 @@
     <Compile Include="INetworkConnection.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\SensorValue.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
