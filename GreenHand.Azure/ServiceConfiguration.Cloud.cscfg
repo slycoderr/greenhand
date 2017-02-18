@@ -13,6 +13,8 @@
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="CFC1DEAE5F8B410FF484DDE3BD263B71F17DF65B" thumbprintAlgorithm="sha1" />
+      <!--<Certificate name="GreenHandTest" thumbprint="‎‎35b68018f2b6b76e1ac0f0b8e4823191debd1e4b" thumbprintAlgorithm="sha1" />-->
+      <Certificate name="GreenHandTest" thumbprint="35B68018F2B6B76E1AC0F0B8E4823191DEBD1E4B" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
 </ServiceConfiguration>

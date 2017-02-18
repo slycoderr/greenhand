@@ -19,7 +19,7 @@ namespace GreenHand.Client
         private string authCode = null;
 
         private HttpClientHandler HttpOptions { get; } = new HttpClientHandler { ClientCertificateOptions = ClientCertificateOption.Manual };
-        private static readonly string ServiceUrl = "http://greenhandrest.cloudapp.net:80/";
+        private static readonly string ServiceUrl = "https://greenhandrest.cloudapp.net:443/";
 
         private static readonly string dataUrl = ServiceUrl+ "getdata/";
         private static readonly string loginUrl = ServiceUrl+ "user/login/";

@@ -10,7 +10,7 @@ using GreenHand.Server.Remote.Common.SensorApi;
 namespace RestAPI.Routes
 {
     [RoutePrefix("sensor"), Authorize]
-    internal class SensorController : ApiController
+    public class SensorController : ApiController
     {
         private readonly SensorApi api = new SensorApi();
 

@@ -8,11 +8,11 @@ using GreenHand.Server.Remote.Common.UserApi;
 namespace RestAPI.Routes
 {
     [RoutePrefix("user")]
-    internal class UserController : ApiController
+    public class UserController : ApiController
     {
         private readonly UserApi api = new UserApi();
 
-        [Route("register/{email}/{password}")]
+        [Route("register/{email}/{password}"), HttpPost]
         public async Task<IHttpActionResult> PostUser(string email, string password)
         {
             try

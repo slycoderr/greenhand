@@ -21,7 +21,7 @@ namespace GreenHand.Server.Remote.Common
         //    //await Database.EnsureCreatedAsync();
         //}
 
-        public GreenHandContext(): base(@"Server=tcp:greenhand.database.windows.net,1433;Initial Catalog=GreenHand;Persist Security Info=False;User ID=akerti127;Password=M@gic345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Column Encryption Setting=Enabled;")
+        public GreenHandContext(): base(@"Server=tcp:greenhand.database.windows.net,1433;Initial Catalog=GreenHand;Persist Security Info=False;User ID=akerti127;Password=M@gic345;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
         {
 
             //Dictionary<string, SqlColumnEncryptionKeyStoreProvider> providers =
@@ -37,6 +37,7 @@ namespace GreenHand.Server.Remote.Common
             //modelBuilder.Entity<User>().Ignore(u=>u.)
             modelBuilder.Entity<User>().Property(x => x.Email).HasColumnType("varchar(MAX)");
             modelBuilder.Entity<User>().Property(x => x.Password).HasColumnType("varchar(MAX)");
+            modelBuilder.Entity<User>().Property(x => x.Salt).HasColumnType("varchar(MAX)");
         }
     }
 }

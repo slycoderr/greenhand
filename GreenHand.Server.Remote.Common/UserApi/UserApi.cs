@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GreenHand.Portable.Models;
+using GreenHand.Server.Remote.Common.Security;
 
 namespace GreenHand.Server.Remote.Common.UserApi
 {
@@ -16,7 +17,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
             {
                 var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
-                return user != null && user.Password == password;
+                return user != null && CryptoHelper.DecryptString(user.Password, user.Salt) == password;
             }
         }
 
@@ -39,7 +40,10 @@ namespace GreenHand.Server.Remote.Common.UserApi
                     throw new ArgumentException("That email address is in use.");
                 }
 
-                var user = new User {Email = email, Password = password};
+                string salt = Guid.NewGuid().ToString();
+                string protectedPassword = CryptoHelper.EncryptString(password, salt);
+
+                var user = new User {Email = email, Password = protectedPassword, Salt = salt };
 
                 db.Users.Add(user);
 

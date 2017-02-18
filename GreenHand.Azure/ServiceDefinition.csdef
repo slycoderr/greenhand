@@ -7,12 +7,26 @@
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="https" protocol="https" port="443" certificate="GreenHandTest" />
-      <InputEndpoint name="http" protocol="http" port="80" />
+      <!--<InputEndpoint name="http" protocol="http" port="80" />-->
+      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
     </Endpoints>
     <Imports>
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>
+    <!--<Certificates>
+      <Certificate name="SampleCertificate"
+                  storeLocation="LocalMachine"
+                  storeName="My"
+                  permissionLevel="limitedOrElevated" />
 
+      <Certificate name="CAForSampleCertificate"
+                  storeLocation="LocalMachine"
+                  storeName="CA"
+                  permissionLevel="limitedOrElevated" />
+    </Certificates>-->
+    <Certificates>
+      <Certificate name="GreenHandTest" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
   </WorkerRole>
 </ServiceDefinition>

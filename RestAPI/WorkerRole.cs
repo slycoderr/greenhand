@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +18,8 @@ namespace RestAPI
 
         public override void Run()
         {
-            Trace.TraceInformation("RestAPI is running");
-
+            //Trace.TraceInformation("RestAPI is running");
+            File.AppendAllLines("info.txt", new List<string> { $"running" });
             try
             {
                 RunAsync(cancellationTokenSource.Token).Wait();
@@ -33,28 +35,24 @@ namespace RestAPI
             // Set the maximum number of concurrent connections
             ServicePointManager.DefaultConnectionLimit = 12;
 
-            var result = base.OnStart();
-            var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["Endpoint1"];
+            var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["https"];
             string baseUri = $"{endpoint.Protocol}://{endpoint.IPEndpoint}";
 
-            Trace.TraceInformation("RestAPI has been started");
+            //Trace.TraceInformation("RestAPI has been started");
 
-            using (WebApp.Start<Startup>(baseUri))
-            {
-                Console.WriteLine("Connected at IP : {0}", baseUri);
-                Console.WriteLine("Press Enter to Exit");
-                Console.ReadLine();
-            }
+            File.AppendAllLines("info.txt", new List<string> { $"{DateTime.Now:G} Connected at IP : {baseUri}" });
 
             app = WebApp.Start<Startup>(new StartOptions(baseUri));
 
-            return result;
+            File.AppendAllLines("info.txt", new List<string> { $"started web app" });
+
+            return base.OnStart();
         }
 
         public override void OnStop()
         {
-            Trace.TraceInformation("RestAPI is stopping");
-
+            //Trace.TraceInformation("RestAPI is stopping");
+            File.AppendAllLines("info.txt", new List<string> { $"stopping" });
             cancellationTokenSource.Cancel();
             runCompleteEvent.WaitOne();
 
@@ -62,14 +60,14 @@ namespace RestAPI
 
             base.OnStop();
 
-            Trace.TraceInformation("RestAPI has stopped");
+            //Trace.TraceInformation("RestAPI has stopped");
         }
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                Trace.TraceInformation("Working");
+                //Trace.TraceInformation("Working");
                 await Task.Delay(1000, cancellationToken);
             }
         }

@@ -33,7 +33,7 @@ namespace GreenHand.Tests
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync("http://greenhandrest.cloudapp.net:80/client/store/temp/65.5");
+                var response = await client.GetAsync("https://greenhandrest.cloudapp.net:443/sensor/values");
 
                 Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
             }
@@ -50,6 +50,18 @@ namespace GreenHand.Tests
             Assert.IsNotNull(newUser, "user is null");
 
             Debug.WriteLine(newUser.Email+" "+newUser.Id);
+        }
+
+        [TestMethod]
+        public async Task RegisterUser2()
+        {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync("https://greenhandrest.cloudapp.net:443/sensor/values");
+
+                Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
+            }
         }
     }
 }

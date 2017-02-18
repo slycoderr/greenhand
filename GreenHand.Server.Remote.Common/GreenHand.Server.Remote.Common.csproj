@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="DataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\CryptoHelper.cs" />
     <Compile Include="SensorApi\SensorApi.cs" />
     <Compile Include="UserApi\UserApi.cs" />
   </ItemGroup>

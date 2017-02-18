@@ -37,7 +37,7 @@ namespace GreenHand.Tests
         {
             UserApi api = new UserApi();
 
-            var results = await api.CreateUser("slycoder127@hotmail.com", "test123");
+            var results = await api.CreateUser("testerer", "test123");
 
             Assert.IsNotNull(results, "user was null");
         }
