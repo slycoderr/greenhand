@@ -22,7 +22,7 @@ namespace GreenHand.Client
         private static readonly string ServiceUrl = "https://greenhandrest.cloudapp.net:443/";
 
         private static readonly string dataUrl = ServiceUrl+ "getdata/";
-        private static readonly string loginUrl = ServiceUrl+ "user/login/";
+        private static readonly string loginUrl = ServiceUrl+ "login/";
         private static readonly string registerUrl = ServiceUrl+ "user/register/";
 		
 		#region GenericMethods
@@ -113,7 +113,7 @@ namespace GreenHand.Client
 
         #endregion
 
-        public async Task<bool> Login(string email, string password)
+        public async Task Login(string email, string password)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -131,11 +131,13 @@ namespace GreenHand.Client
                 if (tokenResponse.IsSuccessStatusCode && !string.IsNullOrEmpty(response["Token"]))
                 {
                     authCode = response["Token"];
-                    return true;
+                }
+
+                else
+                {
+                    HandleError(tokenResponse);
                 }
             }
-
-            return false;
         }
 
         public async Task<User> CreateUser(string email, string password)

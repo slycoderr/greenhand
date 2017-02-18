@@ -40,20 +40,16 @@ namespace GreenHand.Tests
         }
 
         [TestMethod]
-        public async Task RegisterUser()
+        public async Task Login()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
             var client = new RestClient();
 
-           var newUser = await client.CreateUser("slycoder", "test123");
-
-            Assert.IsNotNull(newUser, "user is null");
-
-            Debug.WriteLine(newUser.Email+" "+newUser.Id);
+           await client.Login("slycoder", "test123");
         }
 
         [TestMethod]
-        public async Task RegisterUser2()
+        public async Task RegisterUser()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
             using (var client = new HttpClient())

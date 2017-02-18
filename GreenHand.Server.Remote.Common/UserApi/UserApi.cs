@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GreenHand.Portable.Models;
 using GreenHand.Server.Remote.Common.Security;
@@ -40,10 +37,10 @@ namespace GreenHand.Server.Remote.Common.UserApi
                     throw new ArgumentException("That email address is in use.");
                 }
 
-                string salt = Guid.NewGuid().ToString();
-                string protectedPassword = CryptoHelper.EncryptString(password, salt);
+                var salt = Guid.NewGuid().ToString();
+                var protectedPassword = CryptoHelper.EncryptString(password, salt);
 
-                var user = new User {Email = email, Password = protectedPassword, Salt = salt };
+                var user = new User {Email = email, Password = protectedPassword, Salt = salt};
 
                 db.Users.Add(user);
 

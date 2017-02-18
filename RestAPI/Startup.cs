@@ -19,7 +19,8 @@ namespace RestAPI
             ConfigureOAuth(appBuilder);
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
-            
+
+            config.Filters.Add(new HostAuthenticationFilter("Bearer"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
@@ -40,7 +41,7 @@ namespace RestAPI
 
         public void ConfigureOAuth(IAppBuilder app)
         {
-            OAuthAuthorizationServerOptions oAuthServerOptions = new OAuthAuthorizationServerOptions()
+            OAuthAuthorizationServerOptions oAuthServerOptions = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = false,
                 TokenEndpointPath = new PathString("/login"),
