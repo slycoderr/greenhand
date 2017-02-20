@@ -20,6 +20,7 @@ namespace RestAPI
             var config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
 
+            config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter("Bearer"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));

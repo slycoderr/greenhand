@@ -47,6 +47,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
                 await db.SaveChangesAsync();
 
                 user.Password = null;
+                user.Salt = null;
 
                 return user;
             }
