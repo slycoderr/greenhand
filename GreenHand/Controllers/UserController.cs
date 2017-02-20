@@ -53,7 +53,7 @@ namespace GreenHand.Controllers
         public async Task<IHttpActionResult> LogintUser(string email, string password)
         {
             UserApi api = new UserApi();
-            
+
             try
             {
                 if (await api.Login(email, password)) // user-defined function, checks against a database
