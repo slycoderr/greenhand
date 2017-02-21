@@ -27,6 +27,13 @@ namespace GreenHand
             //    routeTemplate: "api/{controller}/{id}",
             //    defaults: new { id = RouteParameter.Optional }
             //);
+            /*
+              config.SuppressDefaultHostAuthentication();
+    config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+    var cors = new EnableCorsAttribute("*", "*", "*");
+    config.EnableCors(cors);
+*/
         }
     }
 }
