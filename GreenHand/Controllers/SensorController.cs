@@ -39,7 +39,7 @@ namespace GreenHand.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<SensorValue>))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
         public async Task<IHttpActionResult> GetSensorValues()
-        {this.Request.
+        {
             try
             {
                 var results = await api.GetSensorValues();
