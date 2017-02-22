@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GreenHand.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +23,7 @@ namespace GreenHand.Tests.Client
             //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
             var client = new RestClient();
 
-            var result = await client.CreateUser("test3", "test3");
+            await client.CreateUser(Guid.NewGuid().ToString(), "test3");
         }
     }
 }

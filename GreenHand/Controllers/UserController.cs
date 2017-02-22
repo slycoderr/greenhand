@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using GreenHand.Portable.Models;
 using GreenHand.Server.Remote.Common.UserApi;
-
+using Newtonsoft.Json;
 using Swashbuckle.Swagger.Annotations;
 
 namespace GreenHand.Controllers
@@ -29,9 +29,9 @@ namespace GreenHand.Controllers
 
             try
             {
-                var result = await api.CreateUser(email, password);
+                await api.CreateUser(email, password);
 
-                return Ok(result);
+                return Ok();
             }
 
             catch (ArgumentException ex)

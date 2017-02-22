@@ -1,23 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace GreenHand.Portable.Models
 {
-
+    [JsonObject(MemberSerialization.OptIn)]
     public class SensorValue
     {
+        [JsonProperty]
         public int Id { get; set; }
+
+        [JsonProperty]
         public int SensorId { get; set; }
+
+        [JsonProperty]
         public int CustomerId { get; set; }
+
+        [JsonProperty]
         public SensorReadingType ReadingType { get; set; }
 
         /// <summary>
-        /// The resulting value read from the sensor
+        ///     The resulting value read from the sensor
         /// </summary>
+        [JsonProperty]
         public double ReadResult { get; set; }
+
+        [JsonProperty]
         public DateTime Timestamp { get; set; }
     }
 }

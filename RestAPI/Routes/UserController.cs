@@ -17,10 +17,10 @@ namespace RestAPI.Routes
         {
             try
             {
-                var result = await api.CreateUser(email, password);
+                await api.CreateUser(email, password);
 
                 Console.WriteLine("User created successfully");
-                return Created("register", result);
+                return Ok();
             }
 
             catch (ArgumentException ex)

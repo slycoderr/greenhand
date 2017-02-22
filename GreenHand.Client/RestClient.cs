@@ -142,9 +142,9 @@ namespace GreenHand.Client
             }
         }
 
-        public async Task<User> CreateUser(string email, string password)
+        public async Task CreateUser(string email, string password)
         {
-            return await Post<User>($"{registerUrl}{email}/{password}", null, false);
+            await Post<User>($"{registerUrl}{email}/{password}", null, false);
         }
 
         public async Task AddData(SensorValue value)
@@ -152,7 +152,7 @@ namespace GreenHand.Client
             await Post<SensorValue>($"{registerUrl}", value);
         }
 
-        public async Task<IEnumerable<SensorValue>> GetSensorValues(string email, string password)
+        public async Task<IEnumerable<SensorValue>> GetSensorValues()
         {
             return await Get <IEnumerable<SensorValue>>($"{sensorValuesUrl}");
         }

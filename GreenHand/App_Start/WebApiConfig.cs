@@ -17,7 +17,7 @@ namespace GreenHand
             //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.EnableCors(new EnableCorsAttribute("http://localhost", "*", "*" ));
+            //config.EnableCors(new EnableCorsAttribute("http://localhost", "*", "*" ));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
@@ -27,13 +27,13 @@ namespace GreenHand
             //    routeTemplate: "api/{controller}/{id}",
             //    defaults: new { id = RouteParameter.Optional }
             //);
-            /*
-              config.SuppressDefaultHostAuthentication();
-    config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-    var cors = new EnableCorsAttribute("*", "*", "*");
-    config.EnableCors(cors);
-*/
+            //config.SuppressDefaultHostAuthentication();
+            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
+
         }
     }
 }

@@ -18,7 +18,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
             }
         }
 
-        public async Task<User> CreateUser(string email, string password)
+        public async Task CreateUser(string email, string password)
         {
             if (string.IsNullOrEmpty(email))
             {
@@ -45,11 +45,6 @@ namespace GreenHand.Server.Remote.Common.UserApi
                 db.Users.Add(user);
 
                 await db.SaveChangesAsync();
-
-                user.Password = null;
-                user.Salt = null;
-
-                return user;
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿using System.Net.Http;
+﻿using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using GreenHand.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GreenHand.Tests.Client
@@ -21,12 +23,12 @@ namespace GreenHand.Tests.Client
         [TestMethod]
         public async Task GetSensorValues()
         {
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync("https://greenhandrest.cloudapp.net:443/sensor/values");
+            RestClient client = new RestClient();
 
-                Assert.IsTrue(response.IsSuccessStatusCode, response.ReasonPhrase);
-            }
+            await client.Login("test3", "test3");
+            var result = await client.GetSensorValues();
+
+            Assert.IsTrue(result.Any());
         }
 
 
