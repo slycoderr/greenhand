@@ -58,7 +58,8 @@ namespace GreenHand.Controllers
             {
                 if (await api.Login(email, password)) // user-defined function, checks against a database
                 {
-                    System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, email) },
+
+                       System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, email) },
                         "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
                         "http://localhost/",
                         "http://localhost/",
@@ -76,6 +77,15 @@ namespace GreenHand.Controllers
                 return InternalServerError(ex);
             }
 
+        }
+
+        private string ValidateToken(string token)
+        {
+            System.IdentityModel.Tokens.SecurityTokenHandler g = new JwtSecurityTokenHandler();
+            var sk = g.ReadToken(token);
+            var t = g.ValidateToken(sk);
+            
+            return "";
         }
 
         //private string GetSiteUrl()
