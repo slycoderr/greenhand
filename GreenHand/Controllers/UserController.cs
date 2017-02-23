@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -65,7 +66,6 @@ namespace GreenHand.Controllers
                         "http://localhost/",
                         TimeSpan.FromHours(6));
 
-
                     return Ok(token.RawData);
                 }
                 
@@ -79,14 +79,7 @@ namespace GreenHand.Controllers
 
         }
 
-        private string ValidateToken(string token)
-        {
-            System.IdentityModel.Tokens.SecurityTokenHandler g = new JwtSecurityTokenHandler();
-            var sk = g.ReadToken(token);
-            var t = g.ValidateToken(sk);
-            
-            return "";
-        }
+
 
         //private string GetSiteUrl()
         //{
