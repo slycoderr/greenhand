@@ -11,6 +11,8 @@ namespace GreenHand.Utility
     {
         internal static string ValidateToken(string tokenString)
         {
+            tokenString = tokenString.Replace("bearer ", "");
+
             var token = new JwtSecurityToken(tokenString);
             var username = token.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
