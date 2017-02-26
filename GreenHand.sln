@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenHand.Portable", "Green
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sensor", "Sensor", "{C6439744-7827-4762-BBB6-4E3F011EF208}"
 	ProjectSection(SolutionItems) = preProject
+		https example.txt = https example.txt
 		..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\StandardFirmataWiFi_2.ino = ..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\StandardFirmataWiFi_2.ino
 		..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\wifiConfig.h = ..\..\..\..\OneDrive\Documents\Arduino\StandardFirmataWiFi_2\wifiConfig.h
 	EndProjectSection

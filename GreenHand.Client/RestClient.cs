@@ -19,7 +19,7 @@ namespace GreenHand.Client
     {
         public bool IsAuthorized => !string.IsNullOrEmpty(authCode);
 
-        private string authCode = null;
+        private string authCode = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsInZlciI6IjMiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvIiwiZXhwIjoxNDg4MDkwNDQxLCJuYmYiOjE0ODgwNjg4NDF9.t0utsPlobSoVIdEMxO3xHlcN19iB1NqNKX6_NXNGyZc";
         private MobileServiceUser user;
         private MobileServiceClient mobileServiceClient;
 
@@ -125,6 +125,7 @@ namespace GreenHand.Client
             using (var client = new HttpClient(HttpOptions, false))
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
                 client.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
 
                 var tokenResponse = await client.PostAsync($"{loginUrl}{email}/{password}", null);
@@ -132,7 +133,7 @@ namespace GreenHand.Client
 
                 if (tokenResponse.IsSuccessStatusCode && !string.IsNullOrEmpty(responseString))
                 {
-                    authCode = responseString;
+                    authCode = responseString.Trim('\"');
                 }
 
                 else
