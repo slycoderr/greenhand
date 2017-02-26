@@ -13,6 +13,7 @@ namespace GreenHand.Portable.Models
         [JsonProperty]
         public int UserId { get; set; }
 
+
         private string name;
     }
 }

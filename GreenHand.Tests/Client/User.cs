@@ -14,7 +14,7 @@ namespace GreenHand.Tests.Client
             //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
             var client = new RestClient();
 
-            await client.Login("test3", "test3");
+            await client.Login("testerer", "test123");
         }
 
         [TestMethod]

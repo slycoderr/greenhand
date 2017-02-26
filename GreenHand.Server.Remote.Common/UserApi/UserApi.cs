@@ -8,13 +8,13 @@ namespace GreenHand.Server.Remote.Common.UserApi
 {
     public class UserApi
     {
-        public async Task<bool> Login(string email, string password)
+        public async Task<bool> Login(User user)
         {
             using (var db = new GreenHandContext())
             {
-                var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
+                var dbUser = await db.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
-                return user != null && CryptoHelper.DecryptString(user.Password, user.Salt) == password;
+                return dbUser != null && CryptoHelper.DecryptString(dbUser.Password, dbUser.Salt) == user.Password;
             }
         }
 
@@ -27,7 +27,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
 
             if (string.IsNullOrEmpty(password))
             {
-                throw new ArgumentException("Password address cannot be empty.");
+                throw new ArgumentException("Password cannot be empty.");
             }
 
             using (var db = new GreenHandContext())
@@ -40,7 +40,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
                 var salt = Guid.NewGuid().ToString();
                 var protectedPassword = CryptoHelper.EncryptString(password, salt);
 
-                var user = new User {Email = email, Password = protectedPassword, Salt = salt};
+                var user = new User {Email = email, Password = protectedPassword, Salt = salt, ApiKey = (Guid.NewGuid().ToString()+ Guid.NewGuid().ToString()+ Guid.NewGuid().ToString()) };
 
                 db.Users.Add(user);
 

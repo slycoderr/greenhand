@@ -19,18 +19,18 @@ namespace GreenHand.Controllers
     [RoutePrefix("user")]
     public class UserController : ApiController
     {
-        [Route("register/{email}/{password}")]
+        [Route("register")]
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.Created, "The user was created.", typeof(User))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "An invalid parameter was entered.", Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unkown error has occured.", Type = typeof(string))]
-        public async Task<IHttpActionResult> PostUser(string email, string password)
+        public async Task<IHttpActionResult> PostUser([FromBody]User user)
         {
             UserApi api = new UserApi();
 
             try
             {
-                await api.CreateUser(email, password);
+                await api.CreateUser(user.Email, user.Password);
 
                 return Ok();
             }
@@ -46,21 +46,21 @@ namespace GreenHand.Controllers
             }
         }
 
-        [Route("login/{email}/{password}")]
+        [Route("login")]
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.Created, "The user was authenticated.", typeof(string))]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "Invalid credentials supplied", Type = typeof(string))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unkown error has occured.", Type = typeof(string))]
-        public async Task<IHttpActionResult> LogintUser(string email, string password)
+        public async Task<IHttpActionResult> LogintUser([FromBody]User user)
         {
             UserApi api = new UserApi();
 
             try
             {
-                if (await api.Login(email, password)) // user-defined function, checks against a database
+                if (await api.Login(user)) // user-defined function, checks against a database
                 {
 
-                       System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, email) },
+                       System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, user.Email) },
                         "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
                         "http://localhost/",
                         "http://localhost/",

@@ -25,7 +25,7 @@ namespace GreenHand.Tests.Client
         {
             RestClient client = new RestClient();
 
-            await client.Login("test3", "test3");
+            await client.Login("testerer", "test123");
             var result = await client.GetSensorValues();
 
             Assert.IsTrue(result.Any());

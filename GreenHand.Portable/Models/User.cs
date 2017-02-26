@@ -14,10 +14,14 @@ namespace GreenHand.Portable.Models
         [JsonProperty]
         public int Id { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty]
         public string Password { get; set; }
 
         [JsonIgnore]
         public string Salt { get; set; }
+
+
+        [JsonProperty]
+        public string ApiKey { get; set; }
     }
 }

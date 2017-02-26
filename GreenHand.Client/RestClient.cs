@@ -128,7 +128,7 @@ namespace GreenHand.Client
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
                 client.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
 
-                var tokenResponse = await client.PostAsync($"{loginUrl}{email}/{password}", null);
+                var tokenResponse = await client.PostAsync($"{loginUrl}", new StringContent(JsonConvert.SerializeObject(new User{Email = email, Password = password}), Encoding.UTF8, "application/json"));
                 var responseString = await tokenResponse.Content.ReadAsStringAsync();
 
                 if (tokenResponse.IsSuccessStatusCode && !string.IsNullOrEmpty(responseString))
@@ -145,7 +145,7 @@ namespace GreenHand.Client
 
         public async Task CreateUser(string email, string password)
         {
-            await Post<User>($"{registerUrl}{email}/{password}", null, false);
+            await Post<User>($"{registerUrl}", new User(){Email = email, Password = password}, false);
         }
 
         public async Task AddData(SensorValue value)
