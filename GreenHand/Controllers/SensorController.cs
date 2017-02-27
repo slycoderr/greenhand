@@ -18,17 +18,15 @@ namespace GreenHand.Controllers
     {
         private readonly SensorApi api = new SensorApi();
 
-        [Route("store/temp/{data}")]
+        [Route("store/{key}/{sensorId}/{type}/{data}")]
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.OK, "The data was stored.")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
-        public async Task<IHttpActionResult> PostSensorData(double data)
+        public async Task<IHttpActionResult> PostSensorData(string key, int sensorId, string type, double data)
         {
             try
             {
-                string userId = SecurityHelpers.ValidateToken(Request.Headers);
-
-                await api.StoreSensorData(new SensorValue() {ReadingType = SensorReadingType.Temperature, Timestamp = DateTime.Now, ReadResult = data});
+                await api.StoreSensorData(key, sensorId, type, data);
 
                 return Ok();
             }

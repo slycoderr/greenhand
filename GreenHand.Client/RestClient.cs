@@ -25,7 +25,7 @@ namespace GreenHand.Client
 
         private HttpClientHandler HttpOptions { get; } = new HttpClientHandler { ClientCertificateOptions = ClientCertificateOption.Manual };
         //private static readonly string ServiceUrl = "https://greenhandrest.cloudapp.net:443/";
-        private static readonly string ServiceUrl = "https://greenhand.azurewebsites.net/";
+        private static readonly string ServiceUrl = "http://greenhand.azurewebsites.net/";
 
         private static readonly string sensorValuesUrl = ServiceUrl+ "sensor/values/";
         private static readonly string addTempDataUrl = ServiceUrl+ "getdata/";
