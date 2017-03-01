@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
@@ -28,22 +29,10 @@ namespace GreenHand.Controllers
         {
             UserApi api = new UserApi();
 
-            try
-            {
-                await api.CreateUser(user.Email, user.Password);
+            await api.CreateUser(user.Email, user.Password);
 
-                return Ok();
-            }
+            return Ok();
 
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
         }
 
         [Route("login"), HttpPost]
@@ -55,28 +44,19 @@ namespace GreenHand.Controllers
         {
             UserApi api = new UserApi();
 
-            try
+            if (await api.Login(user)) // user-defined function, checks against a database
             {
-                if (await api.Login(user)) // user-defined function, checks against a database
-                {
 
-                       System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, user.Email) },
-                        "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
-                        "http://localhost/",
-                        "http://localhost/",
-                        TimeSpan.FromHours(6));
+                    System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, user.Email) },
+                    "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
+                    Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",
+                    Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",,
+                    TimeSpan.FromHours(6));
 
-                    return Ok(token.RawData);
-                }
-                
-                return Unauthorized();
-                
+                return Ok(token.RawData);
             }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-
+                
+            return Unauthorized();
         }
 
 

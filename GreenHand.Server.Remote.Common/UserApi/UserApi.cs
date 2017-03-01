@@ -30,6 +30,11 @@ namespace GreenHand.Server.Remote.Common.UserApi
                 throw new ArgumentException("Password cannot be empty.");
             }
 
+            if (password.Length < 8)
+            {
+                throw new ArgumentException("Password must be at least 8 characters long.");
+            }
+
             using (var db = new GreenHandContext())
             {
                 if (await db.Users.FirstOrDefaultAsync(u => u.Email == email) != null)

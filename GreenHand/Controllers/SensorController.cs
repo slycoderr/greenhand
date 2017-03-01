@@ -24,22 +24,8 @@ namespace GreenHand.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
         public async Task<IHttpActionResult> PostSensorData(string key, int sensorId, string type, double data)
         {
-            try
-            {
-                await api.StoreSensorData(key, sensorId, type, data);
-
-                return Ok();
-            }
-
-            catch (SecurityException)
-            {
-                return Unauthorized();
-            }
-
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError, new HttpError(ex.Message));
-            }
+            await api.StoreSensorData(key, sensorId, type, data);
+            return Ok();
         }
 
 
@@ -49,21 +35,8 @@ namespace GreenHand.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
         public async Task<IHttpActionResult> GetSensorValues()
         {
-            try
-            {
-                string userId = SecurityHelpers.ValidateToken(Request.Headers);
-                return Ok(await api.GetSensorValues());
-            }
-
-            catch (SecurityException)
-            {
-                return Unauthorized();
-            }
-
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError, new HttpError(ex.Message));
-            }
+            string userId = SecurityHelpers.ValidateToken(Request.Headers);
+            return Ok(await api.GetSensorValues());
         }
     }
 }
