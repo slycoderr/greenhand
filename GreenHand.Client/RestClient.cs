@@ -8,7 +8,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using GreenHand.Portable.Models;
-using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json;
 
 namespace GreenHand.Client
@@ -19,13 +18,11 @@ namespace GreenHand.Client
     {
         public bool IsAuthorized => !string.IsNullOrEmpty(authCode);
 
-        private string authCode = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MyIsInZlciI6IjMiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvIiwiZXhwIjoxNDg4MDkwNDQxLCJuYmYiOjE0ODgwNjg4NDF9.t0utsPlobSoVIdEMxO3xHlcN19iB1NqNKX6_NXNGyZc";
-        private MobileServiceUser user;
-        private MobileServiceClient mobileServiceClient;
+        private string authCode;
 
         private HttpClientHandler HttpOptions { get; } = new HttpClientHandler { ClientCertificateOptions = ClientCertificateOption.Manual };
         //private static readonly string ServiceUrl = "https://greenhandrest.cloudapp.net:443/";
-        private static readonly string ServiceUrl = "http://greenhand.azurewebsites.net/";
+        private static readonly string ServiceUrl = "https://greenhand.azurewebsites.net/";
 
         private static readonly string sensorValuesUrl = ServiceUrl+ "sensor/values/";
         private static readonly string addTempDataUrl = ServiceUrl+ "getdata/";

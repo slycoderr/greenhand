@@ -19,7 +19,7 @@ namespace GreenHand.Controllers
     [RoutePrefix("user")]
     public class UserController : ApiController
     {
-        [Route("register")]
+        [Route("register"), HttpPost]
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.Created, "The user was created.", typeof(User))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "An invalid parameter was entered.", Type = typeof(string))]
@@ -46,7 +46,7 @@ namespace GreenHand.Controllers
             }
         }
 
-        [Route("login")]
+        [Route("login"), HttpPost]
         [SwaggerOperation("Create")]
         [SwaggerResponse(HttpStatusCode.Created, "The user was authenticated.", typeof(string))]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "Invalid credentials supplied", Type = typeof(string))]
