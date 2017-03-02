@@ -50,7 +50,7 @@ namespace GreenHand.Controllers
                     System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, user.Email) },
                     "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
                     Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",
-                    Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",,
+                    Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",
                     TimeSpan.FromHours(6));
 
                 return Ok(token.RawData);
