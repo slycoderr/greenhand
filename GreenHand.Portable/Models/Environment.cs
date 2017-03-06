@@ -11,5 +11,8 @@ namespace GreenHand.Portable.Models
 
         [JsonProperty]
         public virtual ObservableCollection<Sensor> Sensors { get; set; }
+
+        [JsonIgnore]
+        public int UserId { get; set; }
     }
 }
