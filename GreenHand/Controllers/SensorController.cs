@@ -29,14 +29,24 @@ namespace GreenHand.Controllers
         }
 
 
+        [Route("values/{span}")]
+        [SwaggerOperation("Get")]
+        [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<SensorValue>))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
+        public async Task<IHttpActionResult> GetSensorValues(int days)
+        {
+            var userId = SecurityHelpers.ValidateToken(Request.Headers);
+            return Ok(await api.GetSensorValues(userId, days));
+        }
+
         [Route("values")]
         [SwaggerOperation("Get")]
         [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<SensorValue>))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
-        public async Task<IHttpActionResult> GetSensorValues()
+        public async Task<IHttpActionResult> GetUserEnvironments()
         {
-            string userId = SecurityHelpers.ValidateToken(Request.Headers);
-            return Ok(await api.GetSensorValues());
+            var userId = SecurityHelpers.ValidateToken(Request.Headers);
+            return Ok(await api.GetUserEnvironments(userId));
         }
     }
 }

@@ -11,6 +11,7 @@ namespace GreenHand.Server.Remote.Common
         public DbSet<SensorValue> SensorValues { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Portable.Models.Environment> Environments { get; set; }
 
         //ef7
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -38,6 +39,7 @@ namespace GreenHand.Server.Remote.Common
             modelBuilder.Entity<User>().Property(x => x.Email).HasColumnType("varchar(MAX)");
             modelBuilder.Entity<User>().Property(x => x.Password).HasColumnType("varchar(MAX)");
             modelBuilder.Entity<User>().Property(x => x.Salt).HasColumnType("varchar(MAX)");
+            //modelBuilder.Entity<User>().Property(x => x.ApiKey).HasColumnType("varchar(MAX)");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace GreenHand.Tests.Server
         [TestMethod]
         public async Task RegisterUser()
         {
-            await new UserApi().CreateUser("testerer12", "test123");
+            await new UserApi().CreateUser("testerer12345", "test12312");
         }
 
         [TestMethod]

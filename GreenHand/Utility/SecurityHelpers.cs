@@ -25,7 +25,7 @@ namespace GreenHand.Utility
             return username;
         }
 
-        internal static string ValidateToken(HttpRequestHeaders headers)
+        internal static int ValidateToken(HttpRequestHeaders headers)
         {
             //if (!headers.Contains("Authorization") || headers.FirstOrDefault(h => h.Key == "Authorization").Value?.FirstOrDefault() == null)
             //{
@@ -43,8 +43,14 @@ namespace GreenHand.Utility
 
             var token = new JwtSecurityToken(headerToken);
             var username = token.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            int id;
 
             if (string.IsNullOrEmpty(username))
+            {
+                throw new SecurityException("Token is invalid");
+            }
+
+            if (!int.TryParse(username, out id))
             {
                 throw new SecurityException("Token is invalid");
             }
@@ -54,7 +60,7 @@ namespace GreenHand.Utility
                 throw new SecurityException("Token is invalid");
             }
 
-            return username;
+            return id;
         }
     }
 }

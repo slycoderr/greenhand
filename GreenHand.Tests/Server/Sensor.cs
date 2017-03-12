@@ -24,7 +24,7 @@ namespace GreenHand.Tests.Server
         {
             SensorApi api = new SensorApi();
 
-            var results = (await api.GetSensorValues()).ToList();
+            var results = (await api.GetSensorValues(1, 60)).ToList();
 
             Assert.IsTrue(results.Any(), "Count:" + results.Count);
         }

@@ -7,6 +7,9 @@ namespace GreenHand.Portable.Models
     public class Environment
     {
         [JsonProperty]
+        public int Id { get; set; }
+
+        [JsonProperty]
         public string Name { get; set; }
 
         [JsonProperty]

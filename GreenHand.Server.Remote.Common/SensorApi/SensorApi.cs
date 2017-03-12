@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GreenHand.Portable;
 using GreenHand.Portable.Models;
+using Environment = GreenHand.Portable.Models.Environment;
 
 namespace GreenHand.Server.Remote.Common.SensorApi
 {
@@ -50,7 +51,7 @@ namespace GreenHand.Server.Remote.Common.SensorApi
                         throw new ArgumentException("Invalid type");
                 }
 
-                db.SensorValues.Add(new SensorValue{CustomerId = user.Id, ReadingType = valueType, ReadResult = value, SensorId = sensorId, Timestamp = DateTime.Now});
+                db.SensorValues.Add(new SensorValue{UserId = user.Id, ReadingType = valueType, ReadResult = value, SensorId = sensorId, Timestamp = DateTime.Now});
 
                 var result = await db.SaveChangesAsync();
 
@@ -62,11 +63,22 @@ namespace GreenHand.Server.Remote.Common.SensorApi
             
         }
 
-        public async Task<IEnumerable<SensorValue>> GetSensorValues()
+        public async Task<IEnumerable<SensorValue>> GetSensorValues(int userId, int days)
         {
             using (var db = new GreenHandContext())
             {
-                return await db.SensorValues.ToListAsync();
+                //make sure the linq statement uses the same date for every iteration
+                var now = DateTime.Now;
+
+                return await db.SensorValues.Where(e => e.UserId == userId && DbFunctions.DiffDays(now, e.Timestamp) <= days).ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Environment>> GetUserEnvironments(int userId)
+        {
+            using (var db = new GreenHandContext())
+            {
+                return await db.Environments.Where(e=>e.UserId == userId).ToListAsync();
             }
         }
     }

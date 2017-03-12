@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using GreenHand.Portable.Models;
 using GreenHand.Server.Remote.Common.Security;
+using Environment = GreenHand.Portable.Models.Environment;
 
 namespace GreenHand.Server.Remote.Common.UserApi
 {
@@ -37,7 +39,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
 
             using (var db = new GreenHandContext())
             {
-                if (await db.Users.FirstOrDefaultAsync(u => u.Email == email) != null)
+                if (await db.Users.AnyAsync(u => u.Email == email))
                 {
                     throw new ArgumentException("That email address is in use.");
                 }
@@ -49,7 +51,21 @@ namespace GreenHand.Server.Remote.Common.UserApi
 
                 db.Users.Add(user);
 
-                await db.SaveChangesAsync();
+                var result = await db.SaveChangesAsync();
+
+                if (result != 1)
+                {
+                    throw new Exception("Failed to insert user into database");
+                }
+
+                db.Environments.Add(new Environment { Name = "My Enivornment", UserId = user.Id });
+
+                var result2 = await db.SaveChangesAsync();
+
+                if (result2 != 1)
+                {
+                    throw new Exception("Failed to insert Environment into database");
+                }
             }
         }
     }

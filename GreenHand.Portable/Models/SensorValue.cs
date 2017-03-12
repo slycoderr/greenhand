@@ -13,7 +13,7 @@ namespace GreenHand.Portable.Models
         public int SensorId { get; set; }
 
         [JsonProperty]
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
 
         [JsonProperty]
         public SensorReadingType ReadingType { get; set; }
