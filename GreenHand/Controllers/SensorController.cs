@@ -10,6 +10,7 @@ using GreenHand.Portable.Models;
 using GreenHand.Server.Remote.Common.SensorApi;
 using GreenHand.Utility;
 using Swashbuckle.Swagger.Annotations;
+using Environment = GreenHand.Portable.Models.Environment;
 
 namespace GreenHand.Controllers
 {
@@ -39,9 +40,9 @@ namespace GreenHand.Controllers
             return Ok(await api.GetSensorValues(userId, days));
         }
 
-        [Route("values")]
+        [Route("environments")]
         [SwaggerOperation("Get")]
-        [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<SensorValue>))]
+        [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<Environment>))]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
         public async Task<IHttpActionResult> GetUserEnvironments()
         {

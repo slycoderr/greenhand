@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using GreenHand.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +15,16 @@ namespace GreenHand.Tests.Client
             //ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
             var client = new RestClient();
 
-            await client.Login("testerer", "test123");
+            var sw = new Stopwatch();
+
+            sw.Start();
+
+            for (int i = 0; i < 20; i++)
+            {
+                await client.Login("slycoder", "M@gic345");
+            }
+
+            Debug.WriteLine(sw.ElapsedMilliseconds/20);
         }
 
         [TestMethod]

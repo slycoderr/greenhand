@@ -10,12 +10,15 @@ namespace GreenHand.Server.Remote.Common.UserApi
 {
     public class UserApi
     {
-        public async Task<bool> Login(User user)
+        public async Task<bool>Login(User user)
         {
             using (var db = new GreenHandContext())
             {
                 var dbUser = await db.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
+                //string encryptedPassword = CryptoHelper.CreateSHAHash(user.Password, dbUser.Salt);
+
+                //return dbUser != null && CryptoHelper.CreateSHAHash(dbUser.Password, dbUser.Salt) == user.Salt;
                 return dbUser != null && CryptoHelper.DecryptString(dbUser.Password, dbUser.Salt) == user.Password;
             }
         }
@@ -44,10 +47,15 @@ namespace GreenHand.Server.Remote.Common.UserApi
                     throw new ArgumentException("That email address is in use.");
                 }
 
-                var salt = Guid.NewGuid().ToString();
+                //var random = new Random();
+                //int salt = random.Next(int.MaxValue);
+                //string hashedPassword = CryptoHelper.CreateSHAHash(password, salt.ToString());
+
+                 var salt = Guid.NewGuid().ToString();
                 var protectedPassword = CryptoHelper.EncryptString(password, salt);
 
                 var user = new User {Email = email, Password = protectedPassword, Salt = salt, ApiKey = (Guid.NewGuid().ToString()+ Guid.NewGuid().ToString()+ Guid.NewGuid().ToString()) };
+                //var user = new User {Email = email, Password = " ", Salt = hashedPassword, ApiKey = Guid.NewGuid().ToString() + Guid.NewGuid() + Guid.NewGuid() };
 
                 db.Users.Add(user);
 

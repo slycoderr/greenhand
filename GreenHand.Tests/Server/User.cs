@@ -11,13 +11,13 @@ namespace GreenHand.Tests.Server
         [TestMethod]
         public async Task RegisterUser()
         {
-            await new UserApi().CreateUser("testerer12345", "test12312");
+            await new UserApi().CreateUser("slycoder", "M@gic345");
         }
 
         [TestMethod]
         public async Task Login()
         {
-            Assert.IsTrue(await new UserApi().Login(new Portable.Models.User(){Email = "testerer", Password = "test123"}));
+            Assert.IsTrue(await new UserApi().Login(new Portable.Models.User(){Email = "slycoder127", Password = "M@gic345"}));
         }
     }
 }

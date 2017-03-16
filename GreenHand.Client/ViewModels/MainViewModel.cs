@@ -1,29 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Command;
+using GreenHand.Portable.Models;
 using Slycoder.Portable.MVVM;
-using Environment = GreenHand.Portable.Models.Environment;
 
 namespace GreenHand.Client.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        public ObservableCollection<GreenHand.Portable.Models.Environment> Environments { get; set; } = new ObservableCollection<Environment>();
+        #region Commands
 
-        public MainViewModel()
-        {
-            Load();
-        }
+        public RelayCommand LoadCommand => new RelayCommand(async () => await Load());
 
-        public void Load()
+        #endregion
+
+        //Collections
+        public ObservableCollection<Environment> Environments { get; private set; } = new ObservableCollection<Environment>();
+
+        //public members
+
+        //Private members
+        private readonly RestClient restClient = new RestClient();
+
+
+        public async Task Load()
         {
-            if (Environments.Count == 0)
-            {
-                Environments.Add(new Environment(){Name = "My Environment"});
-            }
+            Environments = new ObservableCollection<Environment>(await restClient.GetEnvironments());
         }
     }
 }

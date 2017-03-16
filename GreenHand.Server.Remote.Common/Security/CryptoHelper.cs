@@ -133,5 +133,14 @@ namespace GreenHand.Server.Remote.Common.Security
         {
             return 8;
         }
+
+        internal static string CreateSHAHash(string password, string salt)
+        {
+            System.Security.Cryptography.SHA512Managed HashTool = new System.Security.Cryptography.SHA512Managed();
+            Byte[] PasswordAsByte = System.Text.Encoding.UTF8.GetBytes(string.Concat(password, salt));
+            Byte[] EncryptedBytes = HashTool.ComputeHash(PasswordAsByte);
+            HashTool.Clear();
+            return Convert.ToBase64String(EncryptedBytes);
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GreenHand.Portable.Models;
 using Newtonsoft.Json;
+using Environment = GreenHand.Portable.Models.Environment;
 
 namespace GreenHand.Client
 {
@@ -16,21 +17,22 @@ namespace GreenHand.Client
     //ServicePointManager.ServerCertificateValidationCallback +=(sender, certificate, chain, errors) => certificate.GetCertHashString() == "35D197D73B546C232E4AB4BE7D8CB502000116A7";
     public class RestClient
     {
-        public bool IsAuthorized => !string.IsNullOrEmpty(authCode);
+        public static bool IsAuthorized => !string.IsNullOrEmpty(authCode);
 
-        private string authCode;
+        private static string authCode;
 
-        private HttpClientHandler HttpOptions { get; } = new HttpClientHandler { ClientCertificateOptions = ClientCertificateOption.Manual };
+        private static HttpClientHandler HttpOptions { get; } = new HttpClientHandler { ClientCertificateOptions = ClientCertificateOption.Manual };
         //private static readonly string ServiceUrl = "https://greenhandrest.cloudapp.net:443/";
         private static readonly string ServiceUrl = "https://greenhand.azurewebsites.net/";
 
         private static readonly string sensorValuesUrl = ServiceUrl+ "sensor/values/";
+        private static readonly string getEnvironmentsUrl = ServiceUrl+ "sensor/environments/";
         private static readonly string addTempDataUrl = ServiceUrl+ "getdata/";
         private static readonly string loginUrl = ServiceUrl+ "user/login/";
         private static readonly string registerUrl = ServiceUrl+ "user/register/";
-		
-		#region GenericMethods
-		private async Task<T> Get<T>(string address)
+
+        #region GenericMethods
+        private static async Task<T> Get<T>(string address)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -51,7 +53,7 @@ namespace GreenHand.Client
             }
         }
 
-        public async Task Put(string address, object data = null)
+        public static async Task Put(string address, object data = null)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -70,7 +72,7 @@ namespace GreenHand.Client
         }
 
 
-        public async Task<T> Post<T>(string address, object data = null, bool needsAuthorization = true)
+        public static async Task<T> Post<T>(string address, object data = null, bool needsAuthorization = true)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -92,7 +94,7 @@ namespace GreenHand.Client
         }
 
 
-        public async Task Delete(string address)
+        public static async Task Delete(string address)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -110,14 +112,14 @@ namespace GreenHand.Client
             }
         }
 
-        private void HandleError(HttpResponseMessage response)
+        private static void HandleError(HttpResponseMessage response)
         {
             throw new WebException(response.ReasonPhrase);
         }
 
         #endregion
 
-        public async Task Login(string email, string password)
+        public static async Task<bool> Login(string email, string password)
         {
             using (var client = new HttpClient(HttpOptions, false))
             {
@@ -125,24 +127,46 @@ namespace GreenHand.Client
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
                 client.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
 
-                var tokenResponse = await client.PostAsync($"{loginUrl}", new StringContent(JsonConvert.SerializeObject(new User{Email = email, Password = password}), Encoding.UTF8, "application/json"));
-                var responseString = await tokenResponse.Content.ReadAsStringAsync();
-
-                if (tokenResponse.IsSuccessStatusCode && !string.IsNullOrEmpty(responseString))
+                try
                 {
-                    authCode = responseString.Trim('\"');
+                    authCode = null;
+
+                    var tokenResponse = await client.PostAsync($"{loginUrl}", new StringContent(JsonConvert.SerializeObject(new User {Email = email, Password = password}), Encoding.UTF8, "application/json"));
+                    var responseString = await tokenResponse.Content.ReadAsStringAsync();
+
+                    if (tokenResponse.IsSuccessStatusCode && !string.IsNullOrEmpty(responseString))
+                    {
+                        authCode = responseString.Trim('\"');
+                    }
+
+                    else
+                    {
+                        HandleError(tokenResponse);
+                    }
+
+                    return IsAuthorized;
                 }
 
-                else
+                catch (WebException)
                 {
-                    HandleError(tokenResponse);
+                    return false;
+                }
+
+                catch (TaskCanceledException)
+                {
+                    return false;
+                }
+
+                catch (HttpRequestException)
+                {
+                    return false;
                 }
             }
         }
 
         public async Task CreateUser(string email, string password)
         {
-            await Post<User>($"{registerUrl}", new User(){Email = email, Password = password}, false);
+            await Post<User>($"{registerUrl}", new User() { Email = email, Password = password }, false);
         }
 
         public async Task AddData(SensorValue value)
@@ -153,6 +177,11 @@ namespace GreenHand.Client
         public async Task<IEnumerable<SensorValue>> GetSensorValues()
         {
             return await Get <IEnumerable<SensorValue>>($"{sensorValuesUrl}");
+        }
+
+        public async Task<IEnumerable<Environment>> GetEnvironments()
+        {
+            return await Get<IEnumerable<Environment>>($"{getEnvironmentsUrl}");
         }
     }
 }
