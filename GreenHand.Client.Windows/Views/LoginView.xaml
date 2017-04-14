@@ -4,14 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GreenHand.Client.Windows.Views"
-             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="GreenHand.Client.Windows.Views.LoginView"
-             mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1200" Background="#FF2F2F2F">
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+             x:Class="GreenHand.Client.Windows.Views.LoginView"
+             mc:Ignorable="d" x:Name="ThisControl"
+             d:DesignHeight="800" d:DesignWidth="1200" Background="#FF2F2F2F" DataContext="{Binding UserViewModel, Source={StaticResource MainViewModel}}">
+    <UserControl.Resources>
+        <Storyboard x:Key="FadeOutStoryboard">
+            <DoubleAnimation Storyboard.TargetName="ThisControl" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1">
+
+            </DoubleAnimation>
+        </Storyboard>
+        <!--<Storyboard x:Key="LoginStoryboard">
+            <DoubleAnimation
+                Storyboard.TargetName="Effect"
+                Storyboard.TargetProperty="BlurRadius"
+                From="0" To="10" Duration="0:0:0:1.5"
+                AutoReverse="True" RepeatBehavior="Forever" />
+        </Storyboard>-->
+    </UserControl.Resources>
+    
+    <i:Interaction.Triggers>
+        <ei:DataTrigger Binding="{Binding IsUserAuthenticated, Mode=OneWay}" Value="True">
+            <ei:ControlStoryboardAction Storyboard="{StaticResource FadeOutStoryboard}" ControlStoryboardOption="Play"/>
+        </ei:DataTrigger>
+    </i:Interaction.Triggers>
+
     <StackPanel VerticalAlignment="Center" >
-        <Image  Width="600" Height="300" Source="/GreenHandInsights;component/Images/GreenHandLogo Rectangle.png"/>
-        <TextBox Custom:TextBoxHelper.AutoWatermark="True" Custom:TextBoxHelper.Watermark="Username" Width="600"/>
-        <TextBox Custom:TextBoxHelper.AutoWatermark="True" Custom:TextBoxHelper.Watermark="Password" Width="600" Margin="0,0,0,0"/>
-        <Button Content="Login" Width="600" Margin="0,20,0,50"/>
+        <Image  Width="600" Height="300" Source="/GreenHandInsights;component/Images/GreenHandLogo Rectangle.png">
+            <!--<Image.Effect>
+                <DropShadowEffect x:Name="Effect" ShadowDepth="0"
+                          Color="White"
+                          Opacity="0"
+                          BlurRadius="0" />
+            </Image.Effect>-->
+        </Image>
+        <TextBox Focusable="True" x:Name="UserNameTextBox" Text="{Binding LoginUsername}" Custom:TextBoxHelper.AutoWatermark="True" Custom:TextBoxHelper.Watermark="Username" Width="600" TabIndex="0" />
+        <PasswordBox TabIndex="1" Focusable="True" x:Name="PasswordTextBox" behaviours:PasswordBoxBindingBehavior.Password="{Binding LoginPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Custom:TextBoxHelper.UseFloatingWatermark="True" Custom:TextBoxHelper.Watermark="Password" Width="600">
+            <PasswordBox.InputBindings>
+                <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+        <Button TabIndex="2" Content="Login" Width="600" Margin="0,20,0,50" Command="{Binding LoginCommand}"/>
+
+        <Custom:ProgressRing IsActive="{Binding IsLoggingIn}"></Custom:ProgressRing>
     </StackPanel>
 </UserControl>
 

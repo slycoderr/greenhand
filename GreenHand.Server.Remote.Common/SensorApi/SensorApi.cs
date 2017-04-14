@@ -69,6 +69,7 @@ namespace GreenHand.Server.Remote.Common.SensorApi
             {
                 //make sure the linq statement uses the same date for every iteration
                 var now = DateTime.Now;
+                db.Configuration.ProxyCreationEnabled = false;
 
                 return await db.SensorValues.Where(e => e.UserId == userId && DbFunctions.DiffDays(now, e.Timestamp) <= days).ToListAsync();
             }
@@ -78,7 +79,9 @@ namespace GreenHand.Server.Remote.Common.SensorApi
         {
             using (var db = new GreenHandContext())
             {
-                return await db.Environments.Where(e=>e.UserId == userId).ToListAsync();
+                db.Configuration.ProxyCreationEnabled = false;
+
+                return await db.Environments.Where(e => e.UserId == userId).ToListAsync(); ;
             }
         }
     }

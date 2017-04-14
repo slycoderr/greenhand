@@ -17,7 +17,7 @@ namespace GreenHand.Tests.Server
         [TestMethod]
         public async Task Login()
         {
-            Assert.IsTrue(await new UserApi().Login(new Portable.Models.User(){Email = "slycoder127", Password = "M@gic345"}));
+            Assert.IsTrue(await new UserApi().Login(new Portable.Models.User(){Email = "slycoder127", Password = "M@gic345"}) > 0);
         }
     }
 }

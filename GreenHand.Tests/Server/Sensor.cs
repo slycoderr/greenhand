@@ -28,5 +28,15 @@ namespace GreenHand.Tests.Server
 
             Assert.IsTrue(results.Any(), "Count:" + results.Count);
         }
+
+        [TestMethod]
+        public async Task GetenvValues()
+        {
+            SensorApi api = new SensorApi();
+
+            var results = (await api.GetUserEnvironments(14)).ToList();
+
+            Assert.IsTrue(results.Any(), "Count:" + results.Count);
+        }
     }
 }

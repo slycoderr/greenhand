@@ -10,7 +10,12 @@ namespace GreenHand.Server.Remote.Common.UserApi
 {
     public class UserApi
     {
-        public async Task<bool>Login(User user)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>The id of the user, if susscessful, -1 else.</returns>
+        public async Task<int>Login(User user)
         {
             using (var db = new GreenHandContext())
             {
@@ -19,7 +24,7 @@ namespace GreenHand.Server.Remote.Common.UserApi
                 //string encryptedPassword = CryptoHelper.CreateSHAHash(user.Password, dbUser.Salt);
 
                 //return dbUser != null && CryptoHelper.CreateSHAHash(dbUser.Password, dbUser.Salt) == user.Salt;
-                return dbUser != null && CryptoHelper.DecryptString(dbUser.Password, dbUser.Salt) == user.Password;
+                return dbUser != null && CryptoHelper.DecryptString(dbUser.Password, dbUser.Salt) == user.Password ? dbUser.Id : -1;
             }
         }
 

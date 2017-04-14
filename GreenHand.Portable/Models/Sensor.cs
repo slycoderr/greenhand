@@ -12,6 +12,8 @@ namespace GreenHand.Portable.Models
         public int Id { get; set; }
         [JsonProperty]
         public int UserId { get; set; }
+        [JsonProperty]
+        public int EnvironmentId { get; set; }
 
 
         private string name;

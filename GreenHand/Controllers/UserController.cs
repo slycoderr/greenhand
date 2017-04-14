@@ -43,11 +43,12 @@ namespace GreenHand.Controllers
         public async Task<IHttpActionResult> LogintUser([FromBody]User user)
         {
             UserApi api = new UserApi();
+            var userId = await api.Login(user);
 
-            if (await api.Login(user)) // user-defined function, checks against a database
+            if (userId > 0) // user-defined function, checks against a database
             {
 
-                    System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, user.Email) },
+                    System.IdentityModel.Tokens.JwtSecurityToken token = Microsoft.Azure.Mobile.Server.Login.AppServiceLoginHandler.CreateToken(new Claim[] { new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()) },
                     "GfYVqdtZUJQfghRiaonAeRQRDjytRi47",
                     Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",
                     Debugger.IsAttached ? "http://localhost/" : "https://greenhand.azurewebsites.net",

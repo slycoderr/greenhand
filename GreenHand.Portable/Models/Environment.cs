@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using Slycoder.Portable.MVVM;
 
 namespace GreenHand.Portable.Models
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Environment
+    public class Environment : BindableBase
     {
         [JsonProperty]
         public int Id { get; set; }
@@ -15,7 +16,7 @@ namespace GreenHand.Portable.Models
         [JsonProperty]
         public virtual ObservableCollection<Sensor> Sensors { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty]
         public int UserId { get; set; }
     }
 }
