@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 
 #include "SensorCore.h"
 #include "Adafruit_HTU21DF.h"
@@ -26,19 +26,40 @@ void setup()
 
 void loop()
 {
+  #if defined(DEBUG)
+    Serial.println("Waiting for a command...");
+  #endif
+  
   String line = Serial.readStringUntil('\n');
+
+  #if defined(DEBUG)
+    Serial.println("Read:"+line);
+  #endif
 
   if (line == "config")
   {
     sensor.ReconfigureWifi();
   }
 
+  else if (line == "Hello")
+  {
+	  sensor.ValidateSensor();
+  }
+
+  else if (line == "GetId")
+  {
+	  sensor.GetId();
+  }
+
+  else if (line == "SetApiKey")
+  {
+	  sensor.SetApiKey();
+  }
+
   else
   {
     ReadHumidity();
   }
-
-  delay(30000);
 }
 
 void ReadHumidity()

@@ -19,7 +19,7 @@ bool SensorCore::Initialize()
     ; // wait for serial port to connect.
   }
 
-  Serial.setTimeout(5000);
+  Serial.setTimeout(20000);
 	
   #if defined(DEBUG)
 	Serial.println("Serial connected.");
@@ -123,13 +123,9 @@ void SensorCore::SendData(String data, String type)
 
 void SensorCore::ReconfigureWifi()
 {
-	Serial.setTimeout(20000);
-
     ssid = Serial.readStringUntil('\n');
     ssidPassword = Serial.readStringUntil('\n');
     InitializeWiFi();
-
-    Serial.setTimeout(5000);
 }
 
 void SensorCore::RefreshWiFiStatus()
@@ -155,4 +151,42 @@ void SensorCore::RefreshWiFiStatus()
   {
     InitializeWiFi();
   }
+}
+
+void SensorCore::GetId()
+{
+	#if defined(DEBUG)
+	Serial.println("Getting Sensor Id.");
+	#endif
+
+	Serial.write(String(sensorId).c_str());
+	Serial.write('\n');
+
+	#if defined(DEBUG)
+		Serial.println("Sent ID: "+ sensorId);
+	#endif
+}
+
+void SensorCore::SetApiKey()
+{
+	#if defined(DEBUG)
+		Serial.println("Waiting for API key...");
+	#endif
+
+	apiKey = Serial.readStringUntil('\n');
+
+	#if defined(DEBUG)
+		Serial.println("Read in API key: " + apiKey);
+	#endif
+
+	Serial.write("Ok\n");
+}
+
+void SensorCore::ValidateSensor()
+{
+	#if defined(DEBUG)
+		Serial.println("Validating Sensor...");
+	#endif
+
+		Serial.write("asuh dude\n");
 }

@@ -33,6 +33,21 @@ void loop()
     sensor.ReconfigureWifi();
   }
 
+  else if (line == "Hello")
+  {
+	  sensor.ValidateSensor();
+  }
+
+  else if (line == "GetId")
+  {
+	  sensor.GetId();
+  }
+
+  else if (line == "SetApiKey")
+  {
+	  sensor.SetApiKey();
+  }
+
   else
   {
     ReadTemp();

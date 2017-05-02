@@ -1,4 +1,6 @@
 #include <ESP8266WiFi.h>
+//#define DEBUG
+
 
 class SensorCore
 {
@@ -8,6 +10,9 @@ class SensorCore
   bool Initialize();
   void SendData(String data, String type);
   void ReconfigureWifi();
+  void GetId();
+  void SetApiKey();
+  void ValidateSensor();
 
   private:
   

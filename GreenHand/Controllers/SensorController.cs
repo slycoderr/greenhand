@@ -40,6 +40,29 @@ namespace GreenHand.Controllers
             return Ok(await api.GetSensorValues(userId, days));
         }
 
+        [Route("values/latest/{sensorId}")]
+        [SwaggerOperation("Get")]
+        [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(SensorValue))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
+        public async Task<IHttpActionResult> GetLatestValue(int sensorId)
+        {
+            var userId = SecurityHelpers.ValidateToken(Request.Headers);
+            return Ok(await api.GetLastReading(userId, sensorId));
+        }
+
+        [Route("register/{sensorId}/{environmentId}")]
+        [SwaggerOperation("Put")]
+        [SwaggerResponse(HttpStatusCode.OK, "The data was processed.", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unknown error has occured.", Type = typeof(string))]
+        public async Task<IHttpActionResult> PutUpdateSensorUser(int sensorId, int environmentId)
+        {
+            var userId = SecurityHelpers.ValidateToken(Request.Headers);
+            var apiKey = await api.RegisterSensor(userId, sensorId, environmentId);
+
+
+            return apiKey.StartsWith("Error") ? (IHttpActionResult)BadRequest(apiKey) : Ok(apiKey); 
+        }
+
         [Route("environments")]
         [SwaggerOperation("Get")]
         [SwaggerResponse(HttpStatusCode.OK, "The data was retrived.", typeof(IEnumerable<Environment>))]

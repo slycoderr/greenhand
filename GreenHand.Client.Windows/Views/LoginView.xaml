@@ -9,7 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              x:Class="GreenHand.Client.Windows.Views.LoginView"
-             mc:Ignorable="d" x:Name="ThisControl"
+             mc:Ignorable="d" x:Name="ThisControl" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource BoolInversionConverter}}"
              d:DesignHeight="800" d:DesignWidth="1200" Background="#FF2F2F2F" DataContext="{Binding UserViewModel, Source={StaticResource MainViewModel}}">
     <UserControl.Resources>
         <Storyboard x:Key="FadeOutStoryboard">

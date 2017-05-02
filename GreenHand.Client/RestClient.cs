@@ -113,6 +113,27 @@ namespace GreenHand.Client
             }
         }
 
+        public async Task<(WebActionResult webActionResult, T returnData)> Put<T>(string address, object data = null)
+        {
+            try
+            {
+                var response = await httpClient.PutAsync(address, new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json"));
+                var webResponse = HandleResponse(response);
+
+                return webResponse.StatusIsGood ? (webResponse, JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync())) : (webResponse, default(T));
+            }
+
+            catch (TaskCanceledException)
+            {
+                return (new WebActionResult(WebActionStatus.RequestFailed, "Unable to connect. The request timed out."), default(T));
+            }
+
+            catch (HttpRequestException)
+            {
+                return (new WebActionResult(WebActionStatus.RequestFailed, "Unable to connect. Please ensure your internet connection is working."), default(T));
+            }
+        }
+
         public async Task<WebActionResult> Post(string address, object data = null, bool needsAuthorization = true)
         {
             try
@@ -240,6 +261,16 @@ namespace GreenHand.Client
         public async Task<(WebActionResult webActionResult, IEnumerable<Environment> environments)> GetEnvironments()
         {
             return await Get<IEnumerable<Environment>>($"{getEnvironmentsUrl}");
+        }
+
+        public async Task<(WebActionResult webActionResult, SensorValue value)> GetLatestSensorValue(Sensor sensor)
+        {
+            return await Get<SensorValue>($"sensor/latest/{sensor.Id}");
+        }
+
+        public async Task<(WebActionResult webActionResult, string returnData)> RegisterSensor(int sensorId, Environment environment)
+        {
+            return await Put<string>($"sensor/register/{sensorId}/{environment.Id}");
         }
     }
 }

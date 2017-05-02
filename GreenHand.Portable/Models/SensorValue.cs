@@ -26,5 +26,8 @@ namespace GreenHand.Portable.Models
 
         [JsonProperty]
         public DateTime Timestamp { get; set; }
+
+        [JsonIgnore]
+        public Sensor Sensor { get; set; }
     }
 }

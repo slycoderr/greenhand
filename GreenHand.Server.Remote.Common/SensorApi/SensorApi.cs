@@ -75,6 +75,53 @@ namespace GreenHand.Server.Remote.Common.SensorApi
             }
         }
 
+        public async Task<SensorValue> GetLastReading(int userId, int sensorId)
+        {
+            using (var db = new GreenHandContext())
+            {
+                db.Configuration.ProxyCreationEnabled = false;
+
+                return await db.SensorValues.Where(s => s.UserId == userId && s.SensorId == sensorId).OrderByDescending(s => s.Timestamp).FirstOrDefaultAsync();
+            }
+        }
+
+        public async Task<string> RegisterSensor(int userId, int sensorId, int environmentId)
+        {
+            using (var db = new GreenHandContext())
+            {
+                db.Configuration.ProxyCreationEnabled = false;
+                var sensor = await db.Sensors.FirstOrDefaultAsync(s => s.Id == sensorId);
+                var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                var environment = await db.Environments.FirstOrDefaultAsync(u => u.Id == environmentId);
+
+                if (sensor == null)
+                {
+                    return "Error: Sensor could not be found. Please contact customer service.";
+                }
+
+                if (environment == null)
+                {
+                    return "Error: Environment could not be found.";
+                }
+
+                if (user == null)
+                {
+                    return "Error: User could not be found.";
+                }
+
+                if (sensor.UserId != null && sensor.UserId != userId)
+                {
+                    return "Error: This sensor has already been registered to another user. Please contact customer service.";
+                }
+
+                sensor.UserId = userId;
+                sensor.EnvironmentId = environmentId;
+                await db.SaveChangesAsync();
+
+                return user.ApiKey;
+            }
+        }
+
         public async Task<IEnumerable<Environment>> GetUserEnvironments(int userId)
         {
             using (var db = new GreenHandContext())

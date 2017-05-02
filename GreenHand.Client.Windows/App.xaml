@@ -17,8 +17,16 @@
                 <!-- theme resource -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
-            <viewModels:MainViewModel x:Key="MainViewModel"/>
+
+            <viewModels:MainViewModel x:Key="MainViewModel">
+                <viewModels:MainViewModel.PlatformService>
+                    <local:WpfPlatformService />
+                </viewModels:MainViewModel.PlatformService>
+            </viewModels:MainViewModel>
+            <local:BoolInversionConverter x:Key="BoolInversionConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
+
+
+

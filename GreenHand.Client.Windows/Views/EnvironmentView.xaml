@@ -15,6 +15,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="5" FontSize="36"/>
+        <Button Content="Register" Command="{Binding RegisterDeviceCommand, Source={StaticResource MainViewModel}}" CommandParameter="{Binding}"/>
         
         <controls:MetroAnimatedTabControl Grid.Row="1">
             <controls:MetroTabItem Header="Overview" >
